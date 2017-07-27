@@ -104,11 +104,9 @@ El JSON siempre tiene que tener este formato
 
 Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal), éste lo procesa, envia a imprimir, y responde al cliente con la respuesta de la impresora.
 
-## ==============================================================================================================================
 ## ACCION printTicket o printRemito		
-## ==============================================================================================================================
 
-## TIPOS DE COMPROBANTES SOPORTADOS
+# TIPOS DE COMPROBANTES SOPORTADOS
 	tipo_cbte
         "TA", 	#Tiquets A
 		"TB",  	#Tiquets B
@@ -123,7 +121,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
         "NDC", 	#Nota Credito C
         "R" 	#Remito
 		
-## 	TIPOS DOCUMENTOS
+# 	TIPOS DOCUMENTOS
 	tipo_doc
 		"DNI",
 		"CUIT",
@@ -133,7 +131,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		"SIN_CALIFICADOR",
 		"CEDULA"
 
-## TIPOS DE RESPONSABLE
+# TIPOS DE RESPONSABLE
 	tipo_responsable
 		"RESPONSABLE_INSCRIPTO",
 		"RESPONSABLE_NO_INSCRIPTO",
@@ -146,7 +144,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		"MONOTRIBUTISTA_SOCIAL",
 		"PEQUENIO_CONTRIBUYENTE_EVENTUAL_SOCIAL"
 
-## PARTES DEL JSON A ENVIAR
+# PARTES DEL JSON A ENVIAR
 		encabezado (opcional): array de strings para imprimir en el header del ticket/factura
 		
 		cabecera (obligatorio): datos del cliente, domicilio, tipo_responsable, tipo_cbte, tipo y nro de doc
@@ -236,18 +234,15 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 	"printerName": "IMPRESORA_FISCAL"
 }
 
-## ==============================================================================================================================
 ## ACCION openDrawer	
-## ==============================================================================================================================
 
 Abre la gaveta de dinero. No es necesario pasar parámetros extra.
 {
   "openDrawer": true
 }
 
-## ==============================================================================================================================
 ## ACCION dailyClose	
-## ==============================================================================================================================
+
 Imprime un cierre fiscal X o Z dependiendo el parámetro enviado
 
 # Cierre X
@@ -260,9 +255,8 @@ Imprime un cierre fiscal X o Z dependiendo el parámetro enviado
   "dailyClose": "X"
 }
 
-## ==============================================================================================================================
 ## ACCION getLastNumber	
-## ==============================================================================================================================
+
 Devuelve el numero del ultimo comprobante impreso segun tipo de factura como parámetro hay que pasarle una variable estatica "tipo_cbte"
 
 # Ultimo numero de Ticket A
@@ -281,10 +275,10 @@ Devuelve el numero del ultimo comprobante impreso segun tipo de factura como par
 }
 
 
-### RESPUESTA 
+## RESPUESTA 
 La respuesta es un JSON con el siguiente formato
 	
-En el caso del printTicket la rta es el numero impreso
+# En el caso del printTicket la rta es el numero impreso
 {
 	"rta": [{
 		"action": "printTicket",
@@ -292,7 +286,7 @@ En el caso del printTicket la rta es el numero impreso
 	}]
 }
 
-En el caso del CierreZ el objeto rta es similar a este
+# En el caso del CierreZ el objeto rta es similar a este
 	HASAR:
 	{ 
 	  _RESERVADO_SIEMPRE_CERO_: "0" (Integer)  
@@ -342,13 +336,13 @@ En el caso del CierreZ el objeto rta es similar a este
 		_ultimo_doc_a_: "2262" (Integer)
      }
 
-Tambien puede venir un error en la impresion o configuracion
+# Tambien puede venir un error en la impresion o configuracion
 
 {
 	"err": "Por el momento, la impresion de remitos no esta habilitada."
 }
 
-O puede venir un mensaje de la impresora
+# O puede venir un mensaje de la impresora
 
 {
 	"msg": ["Poco papel para comprobantes o tickets"]
