@@ -5,7 +5,7 @@ import tornado.ioloop
 import signal
 import os.path
 import logging
-import FiscalBerryStarter
+import FiscalStarter
 from Traductores.TraductoresHandler import TraductoresHandler
 from threading import Thread
 
@@ -17,7 +17,7 @@ def sig_handler(sig, frame):
 newpath = os.path.dirname(os.path.realpath(__file__))
 os.chdir(newpath)		
 
-fbserver = FiscalBerryStarter.FiscalberryServer()
+fbserver = FiscalStarter.FiscalServer()
 
 signal.signal(signal.SIGTERM, sig_handler)
 signal.signal(signal.SIGINT, sig_handler)

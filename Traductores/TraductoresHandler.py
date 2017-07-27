@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import json
-import Configberry
+import ConfigFiscal
 import logging
 import importlib
 import socket
@@ -71,7 +71,7 @@ class TraductoresHandler:
 							99: "DOC_TYPE_SIN_CALIFICADOR",
 						}
 
-	config = Configberry.Configberry()
+	config = ConfigFiscal.ConfigFiscal()
 
 
 	def __init__(self):
@@ -112,7 +112,7 @@ class TraductoresHandler:
 			rta["rta"] =  self._getStatus()
 
 		elif 'restart' in jsonTicket:
-			rta["rta"] =  self._restartFiscalberry()
+			rta["rta"] =  self._restartFiscal()
 
 		elif 'getAvaliablePrinters' in jsonTicket:
 			rta["rta"] =  self._getAvaliablePrinters()
@@ -257,13 +257,13 @@ class TraductoresHandler:
 
 
 		
-	def _restartFiscalberry(self):
-		"reinicia el servicio fiscalberry"
+	def _restartFiscal(self):
+		"reinicia el servicio fiscal"
 		from subprocess import call
 
 		resdict = {
-				"action": "restartFIscalberry", 
-				"rta": call(["service", "fiscalberry-server-rc", "restart"])
+				"action": "restartFIscal", 
+				"rta": call(["service", "fiscal-server-rc", "restart"])
 				}
 
 		return resdict

@@ -1,48 +1,30 @@
-# fiscalberry
+# printFiscal
 
-## NOTA IMPORTANTE: Este proyecto es una mejora del original https://github.com/reingart/pyfiscalprinter
+## NOTA IMPORTANTE: Este proyecto es una mejora del proyecto https://github.com/paxapos/fiscalberry
 
-Realizé un refactor del proyecto original para adaptarlo a una necesidad distinta y moderna, mejorándolo para tal uso.
-
-## ¿Qué es?
-Fiscalberry es un 3x1, actúa como: protocolo, servidor y driver facilitando al programador la impresión de tickets, facturas o comprobantes fiscales.
-
-- _PROCOLO_: Siguiendo la estructura del JSON indicado, se podrá imprimir independientemente de la impresora conectada. Fiscalberry se encargará de conectarse y pelear con los códigos y comandos especiales de cada marca/modelo.
-- _SERVIDOR_: gracias al servidor de websockets es posible conectar tu aplicación para que ésta fácilmente pueda enviar JSON's y recibir las respuestas de manera asíncrona.
-- _DRIVER_: Es el encargado de transformar el JSON genérico en un conjunto de comandos especiales según marca y modelo de la impresora. Aquí es donde reutilicé el código del proyecto de Reingart (https://github.com/reingart/pyfiscalprinter) para impresoras Hasar y Epson.
+Agregue funcionalidad que no tenia el proyecto antes mencionado (por ejemplo, percepciones, impuestos internos, remitos, descuentos y recargos, etc.)
 
 Funciona en cualquier PC con cualquier sistema operativo que soporte python.
-La idea original fue pensada para que funcione en una raspberry pi, cuyo fin es integrar las fiscales al mundo de la Internet de las Cosas (IOT). Yo tengo funcionando varias fiscales conectadas a una raspberry pi.
 
-## ¿Qué lenguajes de programación pueden usarlo?
-Practicamente todos: Javascript, nodejs, python, php, etc.
+Windows: 
+	Se incluye en el proyecto la version del Python sobre la que esta testeada, y ya tiene incluidos todos las dependencias necesarias.
+	Ademas se adjunta el instalador del NMap que se necesita instalar. En la carpeta Instalar.
+	
+Linux:
+	Se necesitan estas dependencias de python	
+		* python-pip (yum o apt-get)
+		* pyserial (pip install)
+		* build-essential python-dev (yum o apt-get)
+		* tornado (pip install)
+		* python-nmap (yum o apt-get)
+		* python-imaging python-serial python-dev python-setuptools (yum o apt-get)
+		* python-escpos (pip install)
 
-Los que se puedan actuar como "cliente Web Socket" y conectarse con el servidor para enviar/recibir JSON's.
+Esta testeado y usandose en un Proyecto en Angular 2, solo hay que llamar a un WS de tipo WebSocket con la url, enviando y recibiendo JSONs.
 
-mas info en la WIKI: https://github.com/ristorantino/fiscalberry/wiki
+### Archivo de configuracion
 
-## PROBALO
-
-### Descargar
-
-usando git
-```sh
-git clone https://github.com/ristorantino/fiscalberry.git
-```
-o directamente el ZIP: https://github.com/ristorantino/fiscalberry/archive/master.zip
-
-## BUG: Cuando se traba impresora fiscal
-
-git clone https://github.com/Intelintec/pyutf8.git
-
-dentro de la carpeta pyutf8 ejecutar:
-
-python setup.py install 
-
-### Crear archivo de configuracion
-
-Renombrar el archivo "config.ini.install" como "config.ini" y configurar la marca, modelo, path y driver de la impresora.
-(al inicializar el servicio "server.py", si el archivo no existe, lo crea automáticamente)
+Se incluyen los config.ini de cada uno de los modelos que se soportan, solo hay que renombrar el que se necesite como config.ini.
 
 Las opciones son:
 
@@ -58,7 +40,7 @@ Las opciones son:
 	(para Epson)
 		"tickeadoras"
 		"epsonlx300+"
-
+		"tm220af"
 
   path:
   	en windows: (COM1, COM2, etc)
@@ -70,115 +52,38 @@ Las opciones son:
 
   	En el caso de seleccionar File, en la variable "path" hay que colocar el nombre del archivo que deseo crear para que se escriban las salidas. Ej en linux: "/tmp/archivo.txt"
 
-### Instalar Dependencias
-
-
-probado bajo python 2.7.6 en Linux, Ubuntu, Raspian
-
-Se necesitan las dependencias:
-* serial (para conectarse con impresoras seriales)
-* tornado (para usar como servidor de web sockets)
-
-```sh
-sudo apt-get install python-pip
-sudo pip install pyserial
-sudo apt-get install build-essential python-dev
-sudo pip install tornado
-sudo apt-get install python-nmap
-```
-
-Si se quiere usar las comanderas hay que instalar
-```sh
-sudo apt-get install python-imaging python-serial python-dev python-setuptools
-sudo pip install python-escpos
-```
-
-### Instalar Daemond
-En el archivo "fiscalberry-server-rc" deberas abrirlo y modificar la lionea donde dice "DIR=/insertPATHHERE" colocanmdo el path donde se encuentra la carpeta de fiscalberry. Ej: "DIR=/home/pi/fiscalberry"
-
-luego deberas copiar el archivo a /etc/init.d/
-
-```sh
-sudo update-rc.d fiscalberry-server-rc defaults
-```
-
-
-#### Raspberry
-
-para usar impresora de comandas ESCP en raspbian
-```sh
-sudo apt-get install libjpeg-dev
-```
-Además será necesario seguir una serie de pasos adicionales detallados en esta libreria utilizada por fiscalberry:
-https://python-escpos.readthedocs.io/en/latest/user/raspi.html
-
-
 ### Iniciar el servicio
 
-```sh
-sudo python server.py
-```
+	Windows:
+		Se incluye un bat llamado iniciarServicio.bat que ejecuta el daemon.
+		Si se quiere ejecutarlo en modo silent (que no abra la ventana negra del cmd), en el ejecutar de windows poner
+			silentbatch.exe iniciarServicio.bat
+	
+	Linux: 
+		python server.py
+	
+### Instalar Daemond
+	Windows:
+		Añadir un acceso directo a "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" con el comando	
+					silentbatch.exe iniciarServicio.bat
+					
+	Linux:
+		Editar el archivo fiscal-server-rc 
+			Este hace que el server.py se convierta en un servicio de linux para ejecutar en background. 
+			Antes de instalarlo es necesario modificarle la linea donde se especifica el path en donde esta instalado el proyecto: 
+				DIR=aca poner el path a la carpeta			
+			deberá ingresar el path correcto ( en el ultimo "/") EJ: DIR=/home/USER/fiscal
+			
+		cp fiscal-server-rc  /etc/init.d/  
+		update-rc.d fiscal-server-rc defaults	
+		
+		listo, ya lo podemos detener o iniciar usando
 
-### Iniciar el cliente para probarlo
-
-Hay un ejemplo de página web con javascript dentro de la carpeta __js_browser_client__. Deberás abrir el HTML en un browser y jugar un poco con él.
-el archivo fiscalberry.js te servirá si queres enviar a imprimir desde el browser.
-
-
-
-
-## ¿Cómo funciona?
-
-Supongamos que tenemos este JSON genérico:
-```
-{
- "ACCION_A_EJECUTAR": {
-        PARAMETROS_DE_LA_ACCION
-        ...
-        }
-}
-```
-Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscalberry), éste lo procesa, envia a imprimir, y responde al cliente con la respuesta de la impresora. Por ejemplo, devolviendo el número del último comprobante impreso.
-
-
-Otro ejemplo más concreto: queremos imprimir un ticket, esta acción en el protocolo fiscalberry se lo llama como accion "printTicket" y está compuesta de 2 parámetros obligatorios: "encabezado" e "items".
-
-El "encabezado" indica el tipo de comprobante a imprimir (y también podria agregarle datos del cliente, que son opcionales). 
-Los ítems son una lista de productos a imprimir donde, en este ejemplo, tenemos una coca cola, con impuesto de 21%, importe $10, descripción del producto "COCA COLA" y la cantidad vendida es 2.
-
-```javascript
-{
-"printTicket": {
-			"encabezado": {
-		        "tipo_cbte": "T",      // tipo tiquet *obligatorio
-		    },
-		    "items": [
-		        {
-		            "alic_iva": 21.0,  // impuesto
-		            "importe": 10,     // importe
-		            "ds": "COCA COLA", // descripcion producto
-		            "qty": 2.0         // cantidad
-		        }
-		    ]
-			}
-		}
-```
-
-
-
-
+		service fiscal-server-rc stop
+		service fiscal-server-rc start
+		service fiscal-server-rc restart
 
 ## Documentación
-
-
-
-### JSON Accion: **printTicket**
-
-Protocolo para formar un JSON con el objetivo de imprimir un ticket.
-Se compone de 3 distintas partes:
-* Encabezado
-* Ítems
-* Pagos (opcional)
 
 Al imprimir un ticket el servidor enviará 3 comandos previos que pueden resultar en un mensaje de warning: "comando no es valido para el estado de la impresora fiscal ".
 Esto no es un error, sino que antes de imprimir un tiquet envia:
@@ -187,386 +92,264 @@ Esto no es un error, sino que antes de imprimir un tiquet envia:
 * CANCELAR NOTA ED CREDITO O DEBITO
 Es una comprobación útil que ahorrará dolores de cabeza y posibilidades de bloquear la impresora fiscal.
 
-#### Encabezado (Obligatorio)
-tipo: Json
+El JSON siempre tiene que tener este formato
 
-```javascript
 {
-"encabezado": {
-			        "tipo_cbte": "FA", // tipo tiquet VARIABLE ESTATICA *obligatorio
-			        "nro_doc": "20267565393", // identificacion cliente
-			        "domicilio_cliente": "Rua 76 km 34.5 Alagoas", // domicilio
-			        "tipo_doc": "DNI", // tipo documento VARIABLE ESTATICA (mas abajo se detallan)
-			        "nombre_cliente": "Joao Da Silva", // nombre cliente
-			        "tipo_responsable": "RESPONSABLE_INSCRIPTO" // VARIABLE ESTATICA
-			    }
+ "accion_a_ejecutar": 
+ {
+    parametros de la accion
+ },
+ "printerName": "IMPRESORA_FISCAL" // este es el nombre de la impresora del archivo config.ini (siempre tiene que haber una con este nombre minimamente)
 }
 
+Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal), éste lo procesa, envia a imprimir, y responde al cliente con la respuesta de la impresora.
 
-// ejemplo Nota de Crédito "A"
-{
-"encabezado": {
-			        "tipo_cbte": "NCB", // tipo tiquet VARIABLE ESTATICA *obligatorio		        
-				"referencia": 000100012 // numero de comprobante impreso
-			    }
-}
-                
-```
+## ==============================================================================================================================
+## ACCION printTicket o printRemito		
+## ==============================================================================================================================
 
-
-##### Variables Estáticas Para Encabezado
-
+## TIPOS DE COMPROBANTES SOPORTADOS
 	tipo_cbte
-	        "T"  # tiques
-	        "FA", 
-	        "FB", 
-	        "NDA", 
-	        "NCA", 
-	        "NDB", 
-	        "NCB", 
-	        "FC", 
-	        "NDC", 
-	        "NDC",
-
-
-	        
-	tipo_responsable
-	        "RESPONSABLE_INSCRIPTO"
-	        "RESPONSABLE_NO_INSCRIPTO"
-	        "NO_RESPONSABLE"
-	        "EXENTO"
-	        "CONSUMIDOR_FINAL"
-	        "RESPONSABLE_MONOTRIBUTO"
-	        "NO_CATEGORIZADO"
-	        "PEQUENIO_CONTRIBUYENTE_EVENTUAL"
-	        "MONOTRIBUTISTA_SOCIAL"
-	        "PEQUENIO_CONTRIBUYENTE_EVENTUAL_SOCIAL"
-	                        
-
+        "TA", 	#Tiquets A
+		"TB",  	#Tiquets B
+        "FA", 	#Factura A
+        "FB", 	#Factura B
+        "NDA", 	#Nota Debito A
+        "NCA", 	#Nota Credito A
+        "NDB", 	#Nota Debito B
+        "NCB", 	#Nota Credito B
+        "FC", 	#Factura C
+        "NDC", 	#Nota Debito C
+        "NDC", 	#Nota Credito C
+        "R" 	#Remito
+		
+## 	TIPOS DOCUMENTOS
 	tipo_doc
-	        "DNI"
-	        "CUIT"
-	        "LIBRETA_ENROLAMIENTO"
-	        "LIBRETA_CIVICA"
-	        "CEDULA"
-	        "PASAPORTE"
-	        "SIN_CALIFICADOR"
+		"DNI",
+		"CUIT",
+		"LIBRETA_CIVICA",
+		"LIBRETA_ENROLAMIENTO",
+		"PASAPORTE",
+		"SIN_CALIFICADOR",
+		"CEDULA"
 
+## TIPOS DE RESPONSABLE
+	tipo_responsable
+		"RESPONSABLE_INSCRIPTO",
+		"RESPONSABLE_NO_INSCRIPTO",
+		"NO_RESPONSABLE",
+		"EXENTO",
+		"CONSUMIDOR_FINAL",
+		"RESPONSABLE_MONOTRIBUTO",
+		"NO_CATEGORIZADO",
+		"PEQUENIO_CONTRIBUYENTE_EVENTUAL",
+		"MONOTRIBUTISTA_SOCIAL",
+		"PEQUENIO_CONTRIBUYENTE_EVENTUAL_SOCIAL"
 
+## PARTES DEL JSON A ENVIAR
+		encabezado (opcional): array de strings para imprimir en el header del ticket/factura
+		
+		cabecera (obligatorio): datos del cliente, domicilio, tipo_responsable, tipo_cbte, tipo y nro de doc
+			en el caso de las NC se agrega un item "referencia" que es el numero del comprobante original, pero es opcional
+		
+		items (obligatorio): array con el listado de productos a imprimir
+			- el campo importeInternosEpsonB es porque para las Epson la tasa de ajuste para los internos se calcula distinto que en las A (ver el manual de epson.)
+			- en los items esta la posibilidad de enviar itemNegative (por defecto false, para enviar en negativo items) 
+														 discount (por defecto 0 para enviar descuentos o recargos por item)
+														 discountDescription (por defecto '', descripcion del dto recargo del item)
+														 discountNegative (por defecto en True (descuentos) sino False (recargos))
+		
+		dtosGenerales (opcional): descuentos globales o recargos dependiendo el modelo de impresora, para esto se usa el negative
+		
+		formasPago (opcional): array con las distintas formas de pago del ticket / factura
 
+		percepciones (opcional): percepciones de la factura/ticket 
+			para percepciones de iva mandar el campo alic_iva con el % de iva correspondiente
+			para otras percepciones no enviar nada o enviar **.**
+			
+		descuentosRecargos (opcional): descuentos y recargos al final de los items
+		
+		pie (opcional): array de strings para imprimir en el footer del ticket/factura
+		
+## EJEMPLOS
 
-#### Ítems (Obligatorio)
-tipo: list
+#FACTURA A
 
-```javascript
 {
- "items": [
-    {
-        "alic_iva": 21.0, // * Obligatorio
-        "importe": 0.01, // * Obligatorio
-        "ds": "Descripcion Producto", // * Obligatorio
-        "qty": 1.0 // * Obligatorio
-    },
-    {
-        "alic_iva": 21.0,
-        "importe": 0.22,
-        "ds": "COCA COLA",
-        "qty": 2.0
-    }
-]
-}               
-                
-```
-__Todos los campos del ítem son obligatorios__
-
-
-
-#### Pagos (Opcional)
-tipo: list
-```
-{
-"pagos": [
-        {
-        "ds": "efectivo", // * Obligatorio
-        "importe": 1.0    // * Obligatorio
-        }
-    ]
+	"printTicket": {
+		"encabezado": ["Nombre del vendedor:", "ACOSTA, ELIO", "."],
+		"cabecera": {
+			"tipo_cbte": "FA",
+			"nro_doc": 20064219457,
+			"domicilio_cliente": "CALLE DE LA DIRECCION 1234",
+			"tipo_doc": "CUIT",
+			"nombre_cliente": "HERMIDA MANUEL JORGE",
+			"tipo_responsable": "RESPONSABLE_INSCRIPTO"
+		},
+		"items": [{
+			"alic_iva": 21,
+			"importe": 128.5749995,
+			"ds": "FERNET BRANCA 6 x 750",
+			"qty": 24,
+			"porcInterno": 21.85,
+			"importeInternosEpsonB": 0.1404644765330137
+			}, {
+				"alic_iva": 21,
+				"importe": 164.0160845,
+				"ds": "FERNET BRANCA 6 x 1000 cc",
+				"qty": 6,
+				"porcInterno": 21.85,
+				"importeInternosEpsonB": 0.14046323609194558
+			}, {
+				"alic_iva": 21,
+				"importe": 76.8718705,
+				"ds": "FERNET BRANCA 12 X 450 CC",
+				"qty": 12,
+				"porcInterno": 21.85,
+				"importeInternosEpsonB": 0.1404704988933501
+			}],
+		"dtosGenerales": [{
+			"alic_iva": 21,
+			"importe": 10,
+			"ds": "Descuento",
+			"negative": true
+		}],
+		"formasPago": [{
+			"ds": "Cuenta Corriente",
+			"importe": 4770.22
+		}],
+		"percepciones": [{
+			"importe": 52.22,
+			"ds": "PERCEPCION CBA",
+			"porcPerc": 2
+		}],
+		"descuentosRecargos": [{
+			"alic_iva": 21,
+			"importe": 155.5,
+			"ds": "DESCUENTO",
+			"porcInterno": 21.85,
+			"importeInternosEpsonB": 0.21003215434083602,
+			"itemNegative": true
+			}],
+		"pie": ["Efectivo 4771.22", "Vuelto: 1.00"]
+	},
+	"printerName": "IMPRESORA_FISCAL"
 }
-```
 
-#### Ejemplo completo de "printTicket"
-
-```
-		json = {		
-			"printTicket": {
-				"encabezado": {
-			        "tipo_cbte": "FA",
-			        "nro_doc": "20267565393",
-			        "domicilio_cliente": "Rua 76 km 34.5 Alagoas",
-			        "tipo_doc": "DNI",
-			        "nombre_cliente": "Joao Da Silva",
-			        "tipo_responsable": "RESPONSABLE_INSCRIPTO"
-			    },
-			    "items": [
-			        {
-			            "alic_iva": 21.0,
-			            "importe": 0.01,
-			            "ds": "PIPI",
-			            "qty": 1.0
-			        },
-			        {
-			            "alic_iva": 21.0,
-			            "importe": 0.22,
-			            "ds": "COCA",
-			            "qty": 2.0
-			        }
-			    ],
-			    "pagos": [
-			        {
-			            "ds": "efectivo",
-			            "importe": 1.0
-			        }
-			    ]
-				}
-			}
-
-		json = {
-				"printTicket": {
-					"encabezado": {
-						"tipo_cbte": "T"
-					},
-					"items": [{
-						"alic_iva": 21.0,
-						"importe": 0.01,
-						"ds": "PEPSI",
-						"qty": 1.0
-					}, {
-						"alic_iva": 21.0,
-						"importe": 0.12,
-						"ds": "COCA",
-						"qty": 2.0
-					}]
-				}
-			}
-```
-
-
-
-
-
-### JSON Accion: **configure**
-
-Al enviar este JSON se puede configurar el servidor de impresión directamente desde el cliente.
-El archivo de configuración que será modificado es **config.ini** que también puede ser modificado a mano desde consola.
-
-Los parámetros son:
-		
-#### "printerName" 
-
-Se pueden configurar muchas impresoras. Cada impresora estara como nombre de segmento del archivo config.ini
-
-se deberá indicar un nombre para cada impresora.
-
-**_NOTA: Tiene que haber al menos una impresora fiscal con el nombre "IMPRESORA_FISCAL"_**
-
-
-#### "marca" 
-Las opciones son: 
-* "Epson"
-* "Hasar"
-* "Epsond" Para Dummy
-* "Hasard" Para Dummy
-		
-#### "modelo"
-
-Epson:
-* "tickeadoras"
-* "epsonlx300+"
-* "tm-220-af"
-
-Hasar:
-* "615"
-* "715v1"
-* "715v2"
-* "320"
-
-
-#### "path"
-
-En Windows "COM1"... "COM2", etc.
-En linux "/dev/ttyUSB0"
-No es requerido para Epsond y Hasard
-
-#### "driver" (opcional)
-Es la "salida" o sea, es el medio por donde saldrán las impresiones.
-
-Opciones: 
-* Hasar
-* Epson
-* Hasard -> Dummy Driver
-* Epsond -> Dummy Driver
-* Dummy
-* File
-
-Por defecto se utiliza el mismo driver que la impresora, pero en algunas casos (desarrollo) se pueden utilizar drivers extra:
-* Dummy (no presenta salidas en ningun lado, por lo tanto no usa el campo "path")
-* File (para usar este driver es necesario que en el campo "path" se coloque la ruta donde escribir la salida que será un archivo donde imprimirá las respuestas.
-
-
-```javascript
-// EJ: 
-		{
-			"configure": {
-				"printerName": "IMPRESORA_FISCAL",
-				"marca": "Hasar",
-				"modelo": "715v2",
-				"path": "/dev/ttyUSB0"
-			}
-		}
-
-
-		{
-			"configure": {
-				"printerName": "IMPRESORA_FISCAL",
-				"marca": "Epson",
-				"modelo": "tm-220-af",
-				"path": "/tmp/respuestas.txt",
-				"driver": "File"
-			}
-		}
-```
-
-### JSON Accion: **openDrawer**
-
+## ==============================================================================================================================
+## ACCION openDrawer	
+## ==============================================================================================================================
 
 Abre la gaveta de dinero. No es necesario pasar parámetros extra.
-
-```javascript
-// EJ:
 {
   "openDrawer": true
 }
-```
 
-
-### JSON Accion: **getStatus**
-
-retorna la configuracon actual del servidor.  No es necesario pasar parámetros extra.
-
-```
-EJ: 
-{
-  "getStatus": {}
-}
-```
-
-
-### JSON Accion: **dailyClose**
-
-
+## ==============================================================================================================================
+## ACCION dailyClose	
+## ==============================================================================================================================
 Imprime un cierre fiscal X o Z dependiendo el parámetro enviado
 
-```javascript
-// EJ: Imprime un cierre "Zeta"
+# Cierre X
 {
   "dailyClose": "Z"
 }
 
-// Ej: imprimiendo un "X"
+# Cierre X
 {
   "dailyClose": "X"
 }
-```
 
+## ==============================================================================================================================
+## ACCION getLastNumber	
+## ==============================================================================================================================
+Devuelve el numero del ultimo comprobante impreso segun tipo de factura como parámetro hay que pasarle una variable estatica "tipo_cbte"
 
-### JSON Accion: **getAvaliablePrinters**
-
-lista todas las impresoras configuradas en el archivo config.ini
-
-
-### JSON Accion: **setHeader**
-
-Permite agregar lineas al encabezado
-
-```javascript
+# Ultimo numero de Ticket A
 {
-	"setHeader": [
-		"Linea 1",
-		"Linea 22 22",
-		"Linea 3 3 3 3 3"
-	]
+	"getLastNumber": "TA"
 }
 
-```
-
-### JSON Accion: **setTrailer**
-
-Permite agregar lineas al encabezado
-
-```javascript
-{
-	"setTrailer": [
-		"Linea 1",
-		"Linea 22 22",
-		"Linea 3 3 3 3 3"
-	]
-}
-
-// cada item de la lista es una linea a modificar, por ejemplo
-{
-	"setTrailer": [
-		"", 				// dejara la linea 1 vacia
-		"Linea 22 modif",   // modificara la linea 2		
-	]
-}
-
-```
-
-
-### JSON Accion: **getLastNumber**
-
-Devuelve el numero del ultimo comprobante impreso segun tipo de factura
-como parámetro hay que pasarle una variable estatica "tipo_cbte"
-
-```javascript
-// EJ: ultimo numero de tiquet
-{
-	"getLastNumber": "T"
-}
-
-// EJ: ultimo comprobante Factura A
+# Ultimo numero de Factura A
 {
 	"getLastNumber": "FA"
 }
 
-
-// EJ: ultimo comprobante Nota de Credito A
+# Ultimo numero de Nota de Credito A
 {
 	"getLastNumber": "NCA"
 }
 
-```
 
+### RESPUESTA 
+La respuesta es un JSON con el siguiente formato
+	
+En el caso del printTicket la rta es el numero impreso
+{
+	"rta": [{
+		"action": "printTicket",
+		"rta": "7"
+	}]
+}
 
+En el caso del CierreZ el objeto rta es similar a este
+	HASAR:
+	{ 
+	  _RESERVADO_SIEMPRE_CERO_: "0" (Integer)  
+	  _cant_doc_fiscales_: "0" (Integer)  
+	  _cant_doc_fiscales_a_emitidos_: "0" (Integer)  
+	  _cant_doc_fiscales_bc_emitidos_: "0" (Integer)  
+	  _cant_doc_fiscales_cancelados_: "0" (Integer)  
+	  _cant_doc_nofiscales_: "1" (Integer)  
+	  _cant_doc_nofiscales_homologados_: "0" (Integer)  
+	  _cant_nc_a_fiscales_a_emitidos_: "0" (Integer)  
+	  _cant_nc_bc_emitidos_: "0" (Integer)  
+	  _cant_nc_canceladas_: "0" (Integer)  
+	  _monto_credito_nc_: "0.00" (Float)  
+	  _monto_imp_internos_: "0.00" (Float)  
+	  _monto_imp_internos_nc_: "0.00" (Float)  
+	  _monto_iva_doc_fiscal_: "0.00" (Float)  
+	  _monto_iva_nc_: "0.00" (Float)  
+	  _monto_iva_no_inscripto_: "0.00" (Float)  
+	  _monto_iva_no_inscripto_nc_: "0.00" (Float)  
+	  _monto_percepciones_: "0.00" (Float)  
+	  _monto_percepciones_nc_: "0.00" (Float)  
+	  _monto_ventas_doc_fiscal_: "0.00"(Float)  
+	  _status_fiscal_: "0600" (Hexadecimal)  
+	  _status_impresora_: "C080" (Hexadecimal)  
+	  _ultima_nc_a_: "30" (Integer)  
+	  _ultima_nc_b_: "327" (Integer)  
+	  _ultimo_doc_a_: "2262" (Integer)  
+	  _ultimo_doc_b_: "66733" (Integer)  
+	  _ultimo_remito_: "0" (Integer)  
+	  _zeta_numero_: "1" (Integer)  
+	}  
+	
+	EPSON:
+	{
+		_status_fiscal_: "0600" (Hexadecimal)  
+		_status_impresora_: "C080" (Hexadecimal)  
+		_zeta_numero_: "1" (Integer)  
+		_cant_doc_fiscales_cancelados_: "0" (Integer)  
+		_cant_doc_nofiscales_homologados_: "0" (Integer) 
+		_cant_doc_nofiscales_: "1" (Integer)
+		_cant_doc_fiscales_bc_emitidos_: "0" (Integer)  
+		_cant_doc_fiscales_a_emitidos_: "0" (Integer)  
+		_ultimo_doc_bc_: "66733" (Integer)  
+		_monto_ventas_doc_fiscal_: "0.00"(Float) 
+		_monto_iva_doc_fiscal_: "0.00" (Float)  
+		_monto_percepciones_: "0.00" (Float) 
+		_ultimo_doc_a_: "2262" (Integer)
+     }
 
-### JSON RESPUESTA
-Existen 2 tipos de respuesta y siempre vienen con la forma de un JSON.
+Tambien puede venir un error en la impresion o configuracion
 
+{
+	"err": "Por el momento, la impresion de remitos no esta habilitada."
+}
 
-Aquellos que son una respuesta a un comando enviado, comienzan con "ret"
-**_{"ret": ......}_**
+O puede venir un mensaje de la impresora
 
-
-Aquellos que son un mensaje de la impresora fiscal, vienen con "msg"
-
-**_{"msg": ......}_**
-
-```javascript
-// ejemplo retorno de un mensaje cuando no hay papel
-{"msg": ["Poco papel para comprobantes o tickets"]}
-```
-
-
-
-#### NOTA:
-Deberas enviar JSON válidos al servidor. Recomendamos usar la pagina http://jsonlint.com/ para verificar como tu programa esta generando los JSON.
+{
+	"msg": ["Poco papel para comprobantes o tickets"]
+}

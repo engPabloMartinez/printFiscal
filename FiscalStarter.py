@@ -9,8 +9,8 @@ import json
 import logging
 import time
 import ssl
-import Configberry
-import FiscalberryDiscover
+import ConfigFiscal
+import FiscalDiscover
 
 MAX_WAIT_SECONDS_BEFORE_SHUTDOWN = 2
 INTERVALO_IMPRESORA_WARNING = 30.0
@@ -63,7 +63,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 
 
 
-class FiscalberryServer:
+class FiscalServer:
 	application = None
 	http_server = None
 
@@ -72,7 +72,7 @@ class FiscalberryServer:
 
 
 	def __init__(self):
-		print("Iniciando Fiscalberry Server")
+		print("Iniciando Fiscal Server")
 		
 
 		self.application = tornado.web.Application([
@@ -80,23 +80,23 @@ class FiscalberryServer:
 		])
 
 
-		self.configberry = Configberry.Configberry()
+		self.configFisc = ConfigFiscal.ConfigFiscal()
 
 		# send discover data to your server if the is no URL configured, so nothing will be sent
-		discoverUrl = self.configberry.config.has_option('SERVIDOR', "discover_url")
+		discoverUrl = self.configFisc.config.has_option('SERVIDOR', "discover_url")
 		if discoverUrl:
-			discoverUrl = self.configberry.config.get('SERVIDOR', "discover_url")
-			fbdiscover = FiscalberryDiscover.send(discoverUrl);
+			discoverUrl = self.configFisc.config.get('SERVIDOR', "discover_url")
+			fbdiscover = FiscalDiscover.send(discoverUrl);
 
 
 		
-		hasCrt = self.configberry.config.has_option('SERVIDOR', "ssl_crt_path")
-		hasKey = self.configberry.config.has_option('SERVIDOR', "ssl_key_path")
+		hasCrt = self.configFisc.config.has_option('SERVIDOR', "ssl_crt_path")
+		hasKey = self.configFisc.config.has_option('SERVIDOR', "ssl_key_path")
 
 
 		if ( hasCrt and hasKey):
-			ssl_crt_path = self.configberry.config.get('SERVIDOR', "ssl_crt_path")
-			ssl_key_path = self.configberry.config.get('SERVIDOR', "ssl_key_path")
+			ssl_crt_path = self.configFisc.config.get('SERVIDOR', "ssl_crt_path")
+			ssl_key_path = self.configFisc.config.get('SERVIDOR', "ssl_key_path")
 
 			context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
 			context.load_cert_chain(certfile=ssl_crt_path, keyfile=ssl_key_path)
@@ -154,7 +154,7 @@ class FiscalberryServer:
 	def get_config_port(self):
 		"lee el puerto configurado por donde escuchara el servidor de websockets"
 		
-		puerto = self.configberry.config.get('SERVIDOR', "puerto")
+		puerto = self.configFisc.config.get('SERVIDOR', "puerto")
 		return puerto
 
 
@@ -164,7 +164,7 @@ class FiscalberryServer:
 		"Listar las impresoras configuradas"
 		# el primer indice del array corresponde a info del SERVER,
 		# por eso lo omito. El resto son todas impresoras configuradas
-		printers = self.configberry.sections()[1:]
+		printers = self.configFisc.sections()[1:]
 		return printers
 
 
@@ -198,9 +198,9 @@ class FiscalberryServer:
 		for printer in printers:
 			print "  - %s" % printer
 			modelo = None
-			marca = self.configberry.config.get(printer, "marca")
-			driver = self.configberry.config.get(printer, "driver")
-			if self.configberry.config.has_option(printer, "modelo"):
-				modelo = self.configberry.config.get(printer, "modelo")
+			marca = self.configFisc.config.get(printer, "marca")
+			driver = self.configFisc.config.get(printer, "driver")
+			if self.configFisc.config.has_option(printer, "modelo"):
+				modelo = self.configFisc.config.get(printer, "modelo")
 			print "      marca: %s, driver: %s" % (marca, driver)
 		print "\n"

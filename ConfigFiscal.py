@@ -3,7 +3,7 @@ import os
 
 CONFIG_FILE_NAME = "config.ini"
 
-class Configberry:
+class ConfigFiscal:
 
 	config = ConfigParser.ConfigParser()
 
