@@ -83,7 +83,7 @@ Las opciones son:
 		service fiscal-server-rc start
 		service fiscal-server-rc restart
 
-## Documentación
+# Documentación
 
 Al imprimir un ticket el servidor enviará 3 comandos previos que pueden resultar en un mensaje de warning: "comando no es valido para el estado de la impresora fiscal ".
 Esto no es un error, sino que antes de imprimir un tiquet envia:
@@ -106,7 +106,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 
 ## ACCION printTicket o printRemito		
 
-# TIPOS DE COMPROBANTES SOPORTADOS
+### Tipos de comprobantes soportados
 	tipo_cbte
         "TA", 	#Tiquets A
 		"TB",  	#Tiquets B
@@ -121,7 +121,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
         "NDC", 	#Nota Credito C
         "R" 	#Remito
 		
-# 	TIPOS DOCUMENTOS
+### Tipos de documentos
 	tipo_doc
 		"DNI",
 		"CUIT",
@@ -131,7 +131,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		"SIN_CALIFICADOR",
 		"CEDULA"
 
-# TIPOS DE RESPONSABLE
+### Tipos de responsable
 	tipo_responsable
 		"RESPONSABLE_INSCRIPTO",
 		"RESPONSABLE_NO_INSCRIPTO",
@@ -144,7 +144,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		"MONOTRIBUTISTA_SOCIAL",
 		"PEQUENIO_CONTRIBUYENTE_EVENTUAL_SOCIAL"
 
-# PARTES DEL JSON A ENVIAR
+### Partes del JSON a enviar
 		encabezado (opcional): array de strings para imprimir en el header del ticket/factura
 		
 		cabecera (obligatorio): datos del cliente, domicilio, tipo_responsable, tipo_cbte, tipo y nro de doc
@@ -171,7 +171,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		
 ## EJEMPLOS
 
-#FACTURA A
+### FACTURA A
 
 {
 	"printTicket": {
@@ -245,12 +245,12 @@ Abre la gaveta de dinero. No es necesario pasar parámetros extra.
 
 Imprime un cierre fiscal X o Z dependiendo el parámetro enviado
 
-# Cierre X
+### Cierre X
 {
   "dailyClose": "Z"
 }
 
-# Cierre X
+### Cierre X
 {
   "dailyClose": "X"
 }
@@ -259,17 +259,17 @@ Imprime un cierre fiscal X o Z dependiendo el parámetro enviado
 
 Devuelve el numero del ultimo comprobante impreso segun tipo de factura como parámetro hay que pasarle una variable estatica "tipo_cbte"
 
-# Ultimo numero de Ticket A
+### Ultimo numero de Ticket A
 {
 	"getLastNumber": "TA"
 }
 
-# Ultimo numero de Factura A
+### Ultimo numero de Factura A
 {
 	"getLastNumber": "FA"
 }
 
-# Ultimo numero de Nota de Credito A
+### Ultimo numero de Nota de Credito A
 {
 	"getLastNumber": "NCA"
 }
@@ -278,7 +278,7 @@ Devuelve el numero del ultimo comprobante impreso segun tipo de factura como par
 ## RESPUESTA 
 La respuesta es un JSON con el siguiente formato
 	
-# En el caso del printTicket la rta es el numero impreso
+### En el caso del printTicket la rta es el numero impreso
 {
 	"rta": [{
 		"action": "printTicket",
@@ -286,7 +286,7 @@ La respuesta es un JSON con el siguiente formato
 	}]
 }
 
-# En el caso del CierreZ el objeto rta es similar a este
+### En el caso del CierreZ el objeto rta es similar a este
 	HASAR:
 	{ 
 	  _RESERVADO_SIEMPRE_CERO_: "0" (Integer)  
@@ -336,13 +336,13 @@ La respuesta es un JSON con el siguiente formato
 		_ultimo_doc_a_: "2262" (Integer)
      }
 
-# Tambien puede venir un error en la impresion o configuracion
+### Tambien puede venir un error en la impresion o configuracion
 
 {
 	"err": "Por el momento, la impresion de remitos no esta habilitada."
 }
 
-# O puede venir un mensaje de la impresora
+### O puede venir un mensaje de la impresora
 
 {
 	"msg": ["Poco papel para comprobantes o tickets"]
