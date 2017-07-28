@@ -223,7 +223,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 ### FACTURA A
 
 	{
-	"printTicket": {
+	  "printTicket": {
 		"encabezado": ["Nombre del vendedor:", "PEPE GOMEZ", "."],
 		"cabecera": {
 			"tipo_cbte": "FA",
@@ -277,14 +277,14 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		  }
 		],
 		"pie": ["Efectivo 4771.22", "Vuelto: 1.00"]
-    },
-	"printerName": "IMPRESORA_FISCAL"
+      },
+	  "printerName": "IMPRESORA_FISCAL"
 	}
   
 ### NOTA DE CREDITO A
 
-  {
-	"printTicket": {
+	{
+	  "printTicket": {
 		"encabezado": ["Nombre del vendedor:", "PEPE GOMEZ", "."],
 		"cabecera": {
 			"tipo_cbte": "NCA",
@@ -304,14 +304,14 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		   "tasaAjusteInternos": 21.85
 		 }
 		]
-    },
-	"printerName": "IMPRESORA_FISCAL"
-  }  
+      },
+	  "printerName": "IMPRESORA_FISCAL"
+	}  
   
 ### REMITO
 
-  {
-	"printTicket": {
+	{
+	  "printTicket": {
 		"cabecera": {
 			"tipo_cbte": "R",
 			"nro_doc": 11111111111,
@@ -327,9 +327,9 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		   "qty": 24
 		 }
 		]
-    },
-	"printerName": "IMPRESORA_FISCAL"
-  }    
+      },
+	  "printerName": "IMPRESORA_FISCAL"
+	}    
 
 ## ACCION openDrawer	
 
@@ -391,8 +391,8 @@ La respuesta es un JSON con el siguiente formato
 {
  "rta": [
    {
-	 "action": "printTicket",
-	 "rta": "7"
+     "action": "printTicket",
+     "rta": "7"
    }
  ]
 }
