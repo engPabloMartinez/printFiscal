@@ -1,6 +1,6 @@
 # printFiscal
 
-## NOTA IMPORTANTE: Este proyecto es una mejora del proyecto https://github.com/paxapos/fiscalberry
+## NOTA IMPORTANTE: Este proyecto está basado en el proyecto https://github.com/paxapos/fiscalberry.
 
 Agregue funcionalidad que no tenia el proyecto antes mencionado (por ejemplo, percepciones, impuestos internos, remitos, descuentos y recargos, etc.)
 
@@ -8,14 +8,12 @@ Funciona en cualquier PC con cualquier sistema operativo que soporte python.
 
 Windows: 
 ```
-	
 	Se incluye en el proyecto la version del Python sobre la que esta testeada, y ya tiene incluidos todos las dependencias necesarias.
 	Ademas se adjunta el instalador del NMap que se necesita instalar. En la carpeta Instalar.
 ```
 	
 Linux:
-```
-	
+```	
 	Se necesitan estas dependencias de python	
 		* python-pip (yum o apt-get)
 		* pyserial (pip install)
@@ -23,8 +21,7 @@ Linux:
 		* tornado (pip install)
 		* python-nmap (yum o apt-get)
 		* python-imaging python-serial python-dev python-setuptools (yum o apt-get)
-		* python-escpos (pip install)
-		
+		* python-escpos (pip install)	
 ```		
 
 Esta testeado y usandose en un Proyecto en Angular 2, solo hay que llamar a un WS de tipo WebSocket con la url, enviando y recibiendo JSONs.
@@ -38,6 +35,7 @@ Las opciones son:
   para marca: [Hasar, Epson]
 
   modelos: 
+```		
 	(para Hasar)
 		"615"
 		"715v1"
@@ -48,31 +46,40 @@ Las opciones son:
 		"tickeadoras"
 		"epsonlx300+"
 		"tm220af"
+```	
 
   path:
+```	
 	en windows: (COM1, COM2, etc)
 	en linux: (/dev/ttyUSB0, /dev/ttyS0, etc)
+```	
 
   driver:
-	Hasar, Epson, Dummy, File
+```	Hasar, Epson, Dummy, File ```	
 
 
 ### Iniciar el servicio
 
 	Windows:
+```			
 		Se incluye un bat llamado iniciarServicio.bat que ejecuta el daemon.
 		Si se quiere ejecutarlo en modo silent (que no abra la ventana negra del cmd), en el ejecutar de windows poner
 			silentbatch.exe iniciarServicio.bat
-	
+```		
 	Linux: 
+```		
 		python server.py
+```		
 	
 ### Instalar Daemond
 	Windows:
+```			
 		Añadir un acceso directo a "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" con el comando	
 					silentbatch.exe iniciarServicio.bat
+```	
 
 	Linux:
+```	
 		Editar el archivo fiscal-server-rc 
 			Este hace que el server.py se convierta en un servicio de linux para ejecutar en background. 
 			Antes de instalarlo es necesario modificarle la linea donde se especifica el path en donde esta instalado el proyecto: 
@@ -87,6 +94,7 @@ Las opciones son:
 		service fiscal-server-rc stop
 		service fiscal-server-rc start
 		service fiscal-server-rc restart
+```	
 
 # Documentación
 
