@@ -212,7 +212,7 @@ class TraductorFiscal(TraductorInterface):
 		return self.comando.addReturnRecharge(ds, float(importe), float(alic_iva), float(tasaAjusteInternos), 
 											  itemNegative)
     
-	def _imprimirDtosGenerales(self, ds, importe, alic_iva=21., negative=False):
+	def _imprimirDtosGenerales(self, ds, importe, alic_iva=21., negative=True):
 	    self.factura["dtosGenerales"].append(dict(ds=ds, importe=importe, alic_iva=alic_iva, negative=negative))
 	    return self.comando.addAdditional(ds, float(importe), float(alic_iva), negative)
 	
