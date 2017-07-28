@@ -109,13 +109,13 @@ De esta forma evitamos cualquier tipo de error si un comprobante esta abierto po
 
 El JSON siempre tiene que tener este formato
 ```	
-	{
-	"accion_a_ejecutar": 
-	{
-		parametros de la accion
-	},
-	"printerName": "IMPRESORA_FISCAL" // este es el nombre de la impresora del archivo config.ini (siempre tiene que haber una con este nombre minimamente)
-	}
+ {
+   "accion_a_ejecutar": 
+	  {
+		 parametros de la accion
+	  },
+    "printerName": "IMPRESORA_FISCAL" // este es el nombre de la impresora del archivo config.ini (siempre tiene que haber una con este nombre minimamente)
+ }
 ```	
 Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal), éste lo procesa, envia a imprimir, y responde al cliente con la respuesta de la impresora.
 
@@ -217,7 +217,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 
 ### FACTURA A
 
-	{
+  {
 	"printTicket": {
 		"encabezado": ["Nombre del vendedor:", "PEPE GOMEZ", "."],
 		"cabecera": {
@@ -228,43 +228,103 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 			"nombre_cliente": "JOSE LOPEZ",
 			"tipo_responsable": "RESPONSABLE_INSCRIPTO"
 		},
-		"items": [{
-				"alic_iva": 21,
-				"importe": 128.5749995,
-				"ds": "FERNET",
-				"qty": 24,
-				"tasaAjusteInternos": 21.85
-				}, 
-				{
-				"alic_iva": 21,
-				"importe": 164.0160845,
-				"ds": "VINO",
-				"qty": 6
-				}],
-		"dtosGenerales": [{
-			"alic_iva": 21,
-			"importe": 10,
-			"ds": "Descuento"
-		}],
-		"formasPago": [{
-			"ds": "Cuenta Corriente",
-			"importe": 4770.22
-		}],
-		"percepciones": [{
-			"importe": 52.22,
-			"ds": "PERCEPCION CBA",
-			"porcPerc": 2
-		}],
-		"descuentosRecargos": [{
-			"alic_iva": 21,
-			"importe": 155.5,
-			"ds": "DESCUENTO",
-			"tasaAjusteInternos": 21.85
-			}],
+		"items": [
+		 {
+		   "alic_iva": 21,
+		   "importe": 128.5749995,
+		   "ds": "FERNET",
+		   "qty": 24,
+		   "tasaAjusteInternos": 21.85
+		 }, 
+		 {
+		   "alic_iva": 21,
+		   "importe": 164.0160845,
+		   "ds": "VINO",
+		   "qty": 6
+		 }
+		],
+		"dtosGenerales": [
+		 {
+		   "alic_iva": 21,
+		   "importe": 10,
+		   "ds": "Descuento"
+		 }
+		],
+		"formasPago": [
+		 {
+		  "ds": "Cuenta Corriente",
+		  "importe": 4770.22
+		 }
+		],
+		"percepciones": [
+		 {
+		  "importe": 52.22,
+		  "ds": "PERCEPCION CBA",
+		  "porcPerc": 2
+		 }
+		],
+		"descuentosRecargos": [
+		  {
+		   "alic_iva": 21,
+		   "importe": 155.5,
+		   "ds": "DESCUENTO",
+		   "tasaAjusteInternos": 21.85
+		  }
+		],
 		"pie": ["Efectivo 4771.22", "Vuelto: 1.00"]
-	},
+    },
 	"printerName": "IMPRESORA_FISCAL"
-	}
+  }
+  
+### NOTA DE CREDITO A
+
+  {
+	"printTicket": {
+		"encabezado": ["Nombre del vendedor:", "PEPE GOMEZ", "."],
+		"cabecera": {
+			"tipo_cbte": "NCA",
+			"nro_doc": 11111111111,
+			"domicilio_cliente": "CALLE DE LA DIRECCION 1234",
+			"tipo_doc": "CUIT",
+			"nombre_cliente": "JOSE LOPEZ",
+			"tipo_responsable": "RESPONSABLE_INSCRIPTO",
+			"referencia": 00000025
+		},
+		"items": [
+		 {
+		   "alic_iva": 21,
+		   "importe": 128.5749995,
+		   "ds": "FERNET",
+		   "qty": 24,
+		   "tasaAjusteInternos": 21.85
+		 }
+		]
+    },
+	"printerName": "IMPRESORA_FISCAL"
+  }  
+  
+### REMITO
+
+  {
+	"printTicket": {
+		"cabecera": {
+			"tipo_cbte": "R",
+			"nro_doc": 11111111111,
+			"domicilio_cliente": "CALLE DE LA DIRECCION 1234",
+			"tipo_doc": "CUIT",
+			"nombre_cliente": "JOSE LOPEZ",
+			"tipo_responsable": "RESPONSABLE_INSCRIPTO",
+			"copias": 1
+		},
+		"items": [
+		 {
+		   "ds": "FERNET",
+		   "qty": 24
+		 }
+		]
+    },
+	"printerName": "IMPRESORA_FISCAL"
+  }    
 
 ## ACCION openDrawer	
 
