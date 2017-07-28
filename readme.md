@@ -192,7 +192,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
        discountDescription: (OPCIONAL - DEFECTO ' ') descripcion del descuento del item (NO PROBADO)
        discountNegative: (OPCIONAL - DEFECTO True) si el descuento es negativo (descuento) o positivo (recargo) (NO PROBADO)
 	   
-	   NOTA: 
+	NOTA: 
           en el caso de comprobantes A el importe debe ser NETO	
           en el caso de comprobantes B el importe debe ser con el IVA incluido
 		
