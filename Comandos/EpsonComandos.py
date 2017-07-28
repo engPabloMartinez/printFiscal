@@ -248,7 +248,7 @@ class EpsonComandos(ComandoInterface):
             return self.closeDocument()
         raise NotImplementedError
 
-    def addItem(self, description, quantity, price, iva, porcInterno, importeInternosEpsonB, 
+    def addItem(self, description, quantity, price, iva, tasaAjusteInternos, 
 				itemNegative=False, discount=0, discountDescription='', discountNegative=True):
         if type(description) in types.StringTypes:
             description = [description]
@@ -275,14 +275,8 @@ class EpsonComandos(ComandoInterface):
         extraparams = self._currentDocument in (self.CURRENT_DOC_BILL_TICKET,
             self.CURRENT_DOC_CREDIT_TICKET) and ["", "", ""] or []
 			
-        if porcInterno > 0:
-			if self._currentDocumentType == 'A':
-				tasaAjuste = (1/(1+(porcInterno/100)))
-				tasaAjuste = "{0:.8f}".format(tasaAjuste)
-				tasaAjuste = str(int(float(tasaAjuste)*100000000))
-			else: 
-				tasaAjuste = "{0:.8f}".format(importeInternosEpsonB)
-				tasaAjuste = str(int(float(tasaAjuste)*100000000))
+        if tasaAjusteInternos > 0:
+			tasaAjuste = str(tasaAjusteInternos)
         else:
 			tasaAjuste = "0" * 8
 			
@@ -300,7 +294,7 @@ class EpsonComandos(ComandoInterface):
                   discountStr, ivaStr, 'R', "0", "0"] + extraparams)
         return reply
 	
-    def addReturnRecharge(self, description, price, iva, porcInterno, importeInternosEpsonB, itemNegative=False):
+    def addReturnRecharge(self, description, price, iva, tasaAjusteInternos, itemNegative=False):
         if itemNegative:
             sign = 'D'
         else:

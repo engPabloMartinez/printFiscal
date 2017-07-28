@@ -341,7 +341,7 @@ class HasarComandos(ComandoInterface):
             return status
         raise NotImplementedError
 
-    def addItem(self, description, quantity, price, iva, porcInterno, importeInternosEpsonB, 
+    def addItem(self, description, quantity, price, iva, tasaAjusteInternos, 
 				itemNegative=False, discount=0, discountDescription='', discountNegative=True):
         if type(description) in types.StringTypes:
             description = [description]
@@ -363,14 +363,8 @@ class HasarComandos(ComandoInterface):
 			terminalItem = "B"
         else:
 		    terminalItem = "T"
-        if porcInterno > 0:
-			tasaAjuste = (1/(1+(porcInterno/100)))
-			tasaAjuste = "{0:.8f}".format(tasaAjuste)
-			tasaAjuste = int(float(tasaAjuste)*100000000)
-			print tasaAjuste
-			tasaAjuste = "+0." + str(tasaAjuste)
-        else:
-			tasaAjuste = "+0.0"
+        
+		tasaAjuste = "+0." + str(tasaAjusteInternos)
 		
         for d in description[:-1]:
             self._sendCommand(self.CMD_PRINT_TEXT_IN_FISCAL, [self._formatText(d, 'fiscalText'), "0"])
@@ -388,7 +382,7 @@ class HasarComandos(ComandoInterface):
                   sign, "1", "T"])
         return reply
 		
-    def addReturnRecharge(self, description, price, iva, porcInterno, importeInternosEpsonB, itemNegative=False):
+    def addReturnRecharge(self, description, price, iva, tasaAjusteInternos, itemNegative=False):
         """EL ULTIMO CARACTER ES 
 			B: DESCUENTO/RECARGO
 			OTRO RECARGO: DEVOLUCION DE ENVASES"""
@@ -407,14 +401,8 @@ class HasarComandos(ComandoInterface):
 			terminalItem = "B"
         else:
 		    terminalItem = "T"
-        if porcInterno > 0:
-			tasaAjuste = (1/(1+(porcInterno/100)))
-			tasaAjuste = "{0:.8f}".format(tasaAjuste)
-			tasaAjuste = int(float(tasaAjuste)*100000000)
-			print tasaAjuste
-			tasaAjuste = "+0." + str(tasaAjuste)
-        else:
-			tasaAjuste = "+0.0"
+        
+		tasaAjuste = "+0." + str(tasaAjusteInternos)
 		
         for d in description[:-1]:
             self._sendCommand(self.CMD_PRINT_TEXT_IN_FISCAL, [self._formatText(d, 'fiscalText'), "0"])

@@ -30,8 +30,8 @@ Las opciones son:
 
   para marca: [Hasar, Epson]
 
-  modelo: 
-  	(para Hasar)
+  modelos: 
+	(para Hasar)
 		"615"
 		"715v1"
 		"715v2"
@@ -43,14 +43,12 @@ Las opciones son:
 		"tm220af"
 
   path:
-  	en windows: (COM1, COM2, etc)
-  	en linux: (/dev/ttyUSB0, /dev/ttyS0, etc)
+	en windows: (COM1, COM2, etc)
+	en linux: (/dev/ttyUSB0, /dev/ttyS0, etc)
 
   driver:
-  	(puede quedar vacio, en ese caso si la marca setteada es Hasar, el driver sera Hasar, lo mismo con Epson. Modificar File o Dummy es útil para hacer pruebas o desarrollo)
-  	Hasar, Epson, Dummy, File
+	Hasar, Epson, Dummy, File
 
-  	En el caso de seleccionar File, en la variable "path" hay que colocar el nombre del archivo que deseo crear para que se escriban las salidas. Ej en linux: "/tmp/archivo.txt"
 
 ### Iniciar el servicio
 
@@ -66,7 +64,7 @@ Las opciones son:
 	Windows:
 		Añadir un acceso directo a "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" con el comando	
 					silentbatch.exe iniciarServicio.bat
-					
+
 	Linux:
 		Editar el archivo fiscal-server-rc 
 			Este hace que el server.py se convierta en un servicio de linux para ejecutar en background. 
@@ -85,28 +83,30 @@ Las opciones son:
 
 # Documentación
 
-Al imprimir un ticket el servidor enviará 3 comandos previos que pueden resultar en un mensaje de warning: "comando no es valido para el estado de la impresora fiscal ".
+Al imprimir un ticket el servidor enviará 3 comandos previos que pueden resultar en un mensaje de warning: **comando no es valido para el estado de la impresora fiscal**.
+
 Esto no es un error, sino que antes de imprimir un tiquet envia:
-* CANCELAR CUALQUIER TIQUET ABIERTO
-* CANCELAR COMPROBANTE NO FISCAL
-* CANCELAR NOTA ED CREDITO O DEBITO
-Es una comprobación útil que ahorrará dolores de cabeza y posibilidades de bloquear la impresora fiscal.
+	* CANCELAR CUALQUIER TIQUET ABIERTO
+	* CANCELAR COMPROBANTE NO FISCAL
+	* CANCELAR NOTA ED CREDITO O DEBITO
+
+De esta forma evitamos cualquier tipo de error si un comprobante esta abierto por ejemplo.
 
 El JSON siempre tiene que tener este formato
 
-{
- "accion_a_ejecutar": 
- {
-    parametros de la accion
- },
- "printerName": "IMPRESORA_FISCAL" // este es el nombre de la impresora del archivo config.ini (siempre tiene que haber una con este nombre minimamente)
-}
+	{
+		"accion_a_ejecutar": 
+		{
+			parametros de la accion
+		},
+		"printerName": "IMPRESORA_FISCAL" // este es el nombre de la impresora del archivo config.ini (siempre tiene que haber una con este nombre minimamente)
+	}
 
 Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal), éste lo procesa, envia a imprimir, y responde al cliente con la respuesta de la impresora.
 
 ## ACCION printTicket o printRemito		
 
-### Tipos de comprobantes soportados
+### Tipos de comprobantes
 	tipo_cbte
         "TA", 	#Tiquets A
 		"TB",  	#Tiquets B

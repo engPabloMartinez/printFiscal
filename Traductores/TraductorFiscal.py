@@ -184,14 +184,14 @@ class TraductorFiscal(TraductorInterface):
 		
 		return ret
 
-	def _imprimirItem(self, ds, qty, importe=0, alic_iva=21., porcInterno=0, importeInternosEpsonB=0, 
+	def _imprimirItem(self, ds, qty, importe=0, alic_iva=21., tasaAjusteInternos=0, 
 					  itemNegative=False, discount=0, discountDescription='', discountNegative=True):
 		
 		# documento fiscal
 		if self._tipoImpresion == 'F': 
 			"Envia un item (descripcion, cantidad, etc.) a una factura/nc/nd"
 			self.factura["items"].append(dict(ds=ds, qty=qty, 
-											  importe=importe, alic_iva=alic_iva, porcInterno=porcInterno, importeInternosEpsonB=importeInternosEpsonB, 
+											  importe=importe, alic_iva=alic_iva, tasaAjusteInternos=tasaAjusteInternos,
 											  itemNegative=itemNegative, discount=discount, discountDescription=discountDescription, discountNegative=discountNegative))
 			##ds = unicode(ds, "latin1") # convierto a latin1
 			# Nota: no se calcula neto, iva, etc (deben venir calculados!)
@@ -200,7 +200,7 @@ class TraductorFiscal(TraductorInterface):
 			
 			print("DS: ", discountDescription)
 			
-			return self.comando.addItem(ds, float(qty), float(importe), float(alic_iva), float(porcInterno), float(importeInternosEpsonB),
+			return self.comando.addItem(ds, float(qty), float(importe), float(alic_iva), float(tasaAjusteInternos)
 										itemNegative, float(discount), discountDescription, discountNegative)
 		# remito
 		else: 
@@ -209,12 +209,12 @@ class TraductorFiscal(TraductorInterface):
 			
 			return self.comando.addRemitItem(ds, float(qty))								
  
-	def _imprimirDtoRec(self, ds, importe, alic_iva=21., porcInterno=0, importeInternosEpsonB=0, itemNegative=False):
+	def _imprimirDtoRec(self, ds, importe, alic_iva=21., tasaAjusteInternos=0, itemNegative=False):
 	
-		self.factura["descuentosRecargos"].append(dict(ds=ds, importe=importe, alic_iva=alic_iva, porcInterno=porcInterno, 
-										  importeInternosEpsonB=importeInternosEpsonB, itemNegative=itemNegative))
-		return self.comando.addReturnRecharge(ds, float(importe), float(alic_iva), float(porcInterno), 
-											  float(importeInternosEpsonB), itemNegative)
+		self.factura["descuentosRecargos"].append(dict(ds=ds, importe=importe, alic_iva=alic_iva, tasaAjusteInternos=tasaAjusteInternos, 
+										  itemNegative=itemNegative))
+		return self.comando.addReturnRecharge(ds, float(importe), float(alic_iva), float(tasaAjusteInternos), 
+											  itemNegative)
     
 	def _imprimirDtosGenerales(self, ds, importe, alic_iva=21., negative=False):
 	    self.factura["dtosGenerales"].append(dict(ds=ds, importe=importe, alic_iva=alic_iva, negative=negative))
