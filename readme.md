@@ -29,11 +29,14 @@ Esta testeado y usandose en un Proyecto en Angular 2, solo hay que llamar a un W
 ### Archivo de configuracion
 
 Se incluyen los config.ini de cada uno de los modelos que se soportan, solo hay que renombrar el que se necesite como config.ini.
+Es condicion necesaria que por lo menos una de las impresoras se llame **IMPRESORA_FISCAL**.
+
+En puerto va el numero de puerto sobre el que queremos correr el demonio (por defecto 12000).
 
 Las opciones son:
 
   Marca: 
-```  [Hasar, Epson]```
+```  Hasar o Epson```
 
   Modelo: 
 ```		
@@ -63,39 +66,37 @@ Las opciones son:
 
 	Windows:
 ```			
-		Se incluye un bat llamado iniciarServicio.bat que ejecuta el daemon.
-		Si se quiere ejecutarlo en modo silent (que no abra la ventana negra del cmd), en el ejecutar de windows poner
-			silentbatch.exe iniciarServicio.bat
+	Se incluye un bat llamado iniciarServicio.bat que ejecuta el daemon.
+	Si se quiere ejecutarlo en modo silent (que no abra la ventana negra del cmd), en el ejecutar de windows poner silentbatch.exe iniciarServicio.bat
 ```		
-	Linux: 
-```		python server.py ```		
+```	Linux: python server.py ```		
 	
-### Instalar Daemond
+### Instalar Demonio
 	Windows:
 ```			
-		Añadir un acceso directo a "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" con el comando	
-					silentbatch.exe iniciarServicio.bat
+	Añadir un acceso directo a "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" con el comando	silentbatch.exe iniciarServicio.bat
 ```	
 
 	Linux:
 ```	
-		Editar el archivo fiscal-server-rc 
-			Este hace que el server.py se convierta en un servicio de linux para ejecutar en background. 
-			Antes de instalarlo es necesario modificarle la linea donde se especifica el path en donde esta instalado el proyecto: 
-				DIR=aca poner el path a la carpeta			
-			deberá ingresar el path correcto ( en el ultimo "/") EJ: DIR=/home/USER/fiscal
+	Editar el archivo fiscal-server-rc 
+		Este hace que el server.py se convierta en un servicio de linux para ejecutar en background. 
+		Antes de instalarlo es necesario modificarle la linea donde se especifica el path en donde esta instalado el proyecto: 
+			DIR=aca poner el path a la carpeta, deberá ingresar el path correcto ( en el ultimo "/") EJ: DIR=/home/USER/fiscal
 			
-		cp fiscal-server-rc  /etc/init.d/  
-		update-rc.d fiscal-server-rc defaults	
+	cp fiscal-server-rc  /etc/init.d/  
+	update-rc.d fiscal-server-rc defaults	
 		
-		listo, ya lo podemos detener o iniciar usando
+	listo, ya lo podemos detener o iniciar usando
 
-		service fiscal-server-rc stop
-		service fiscal-server-rc start
-		service fiscal-server-rc restart
+	service fiscal-server-rc stop
+	service fiscal-server-rc start
+	service fiscal-server-rc restart
 ```	
 
 # Documentación
+
+**Por defecto el servidor inicia en localhost:12000/ws sino se le pasa host, puerto y uri.**
 
 Al imprimir un ticket el servidor enviará 3 comandos previos que pueden resultar en un mensaje de warning: **comando no es valido para el estado de la impresora fiscal**.
 
@@ -107,20 +108,21 @@ Esto no es un error, sino que antes de imprimir un tiquet envia:
 De esta forma evitamos cualquier tipo de error si un comprobante esta abierto por ejemplo.
 
 El JSON siempre tiene que tener este formato
-
+```	
 	{
-		"accion_a_ejecutar": 
-		{
-			parametros de la accion
-		},
-		"printerName": "IMPRESORA_FISCAL" // este es el nombre de la impresora del archivo config.ini (siempre tiene que haber una con este nombre minimamente)
+	"accion_a_ejecutar": 
+	{
+		parametros de la accion
+	},
+	"printerName": "IMPRESORA_FISCAL" // este es el nombre de la impresora del archivo config.ini (siempre tiene que haber una con este nombre minimamente)
 	}
-
+```	
 Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal), éste lo procesa, envia a imprimir, y responde al cliente con la respuesta de la impresora.
 
 ## ACCION printTicket o printRemito		
 
 ### Tipos de comprobantes
+```
 	tipo_cbte
         "TA", 	#Tiquets A
 		"TB",  	#Tiquets B
@@ -134,8 +136,9 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
         "NDC", 	#Nota Debito C
         "NDC", 	#Nota Credito C
         "R" 	#Remito
-		
+```		
 ### Tipos de documentos
+```
 	tipo_doc
 		"DNI",
 		"CUIT",
@@ -144,8 +147,9 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		"PASAPORTE",
 		"SIN_CALIFICADOR",
 		"CEDULA"
-
+```
 ### Tipos de responsable
+```
 	tipo_responsable
 		"RESPONSABLE_INSCRIPTO",
 		"RESPONSABLE_NO_INSCRIPTO",
@@ -157,31 +161,69 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		"PEQUENIO_CONTRIBUYENTE_EVENTUAL",
 		"MONOTRIBUTISTA_SOCIAL",
 		"PEQUENIO_CONTRIBUYENTE_EVENTUAL_SOCIAL"
-
+```
 ### Partes del JSON a enviar
-		encabezado (opcional): array de strings para imprimir en el header del ticket/factura
+		encabezado (OPCIONAL): 
+		```array de strings para imprimir en el header del ticket/factura```
 		
-		cabecera (obligatorio): datos del cliente, domicilio, tipo_responsable, tipo_cbte, tipo y nro de doc
-			en el caso de las NC se agrega un item "referencia" que es el numero del comprobante original, pero es opcional
+		cabecera (OBLIGATORIO): 
+		```
+			tipo_cbte: (OPCIONAL - DEFECTO 'TB') tipo de comprobante segun la tabla antes especificada
+			tipo_responsable: (OPCIONAL - DEFECTO 'CONSUMIDOR_FINAL') tipo de responsable segun la tabla antes especificada
+			tipo_doc: (OPCIONAL - DEFECTO 'SIN_CALIFICADOR') tipo de documento segun la tabla antes especificada
+			nro_doc: (OPCIONAL - DEFECTO ' ') numero de documento del cliente
+			nombre_cliente: (OPCIONAL - DEFECTO ' ') nombre/razon social del cliente 
+			domicilio_cliente: (OPCIONAL - DEFECTO ' ') domicilio del cliente 
+			referencia: (OPCIONAL - DEFECTO None) numero de comprobante original (Solo para ND/NC)
+			copias: (OPCIONAL - DEFECTO 1) cantidad de copias (Solo para Remitos)
+		```
 		
-		items (obligatorio): array con el listado de productos a imprimir
-			- el campo importeInternosEpsonB es porque para las Epson la tasa de ajuste para los internos se calcula distinto que en las A (ver el manual de epson.)
-			- en los items esta la posibilidad de enviar itemNegative (por defecto false, para enviar en negativo items) 
-														 discount (por defecto 0 para enviar descuentos o recargos por item)
-														 discountDescription (por defecto '', descripcion del dto recargo del item)
-														 discountNegative (por defecto en True (descuentos) sino False (recargos))
+		items (OBLIGATORIO): array con el listado de productos a imprimir
+		```
+			ds: (OBLIGATORIO) descripcion del producto
+			qty: (OBLIGATORIO) cantidad del producto
+			importe: (OPCIONAL - DEFECTO 0) importe del producto
+			alic_iva: (OPCIONAL - DEFECTO 21) alicuota correspondiente de IVA
+			tasaAjusteInternos: (OPCIONAL - DEFECTO 0) la tasa de ajuste para calculo de impuestos internos (Ver manual de las fiscales correspondientes)
+			itemNegative: (OPCIONAL - DEFECTO False) si el item es en negativo (resta) o en positivo (suma)
+			discount: (OPCIONAL - DEFECTO 0) importe del descuento del item **(NO PROBADO)**
+			discountDescription: (OPCIONAL - DEFECTO ' ') descripcion del descuento del item **(NO PROBADO)**
+			discountNegative: (OPCIONAL - DEFECTO True) si el descuento es negativo (descuento) o positivo (recargo) **(NO PROBADO)**
+		```
 		
-		dtosGenerales (opcional): descuentos globales o recargos dependiendo el modelo de impresora, para esto se usa el negative
+		dtosGenerales (OPCIONAL): descuentos globales o recargos dependiendo el modelo de impresora
+		```
+			ds: (OBLIGATORIO) descripcion del descuento
+			importe: (OBLIGATORIO) importe del descuento
+			alic_iva: (OPCIONAL - DEFECTO 21) alicuota correspondiente de IVA
+			negative: (OPCIONAL - DEFECTO False) si el item es en negativo (descuento) o en positivo (recargo)
+		```
 		
-		formasPago (opcional): array con las distintas formas de pago del ticket / factura
-
-		percepciones (opcional): percepciones de la factura/ticket 
-			para percepciones de iva mandar el campo alic_iva con el % de iva correspondiente
-			para otras percepciones no enviar nada o enviar **.**
-			
-		descuentosRecargos (opcional): descuentos y recargos al final de los items
+		formasPago (OPCIONAL): array con las distintas formas de pago del ticket / factura
+		```
+			ds: (OBLIGATORIO) descripcion de la forma de pago
+			importe: (OBLIGATORIO) importe de la forma de pago
+		```
 		
-		pie (opcional): array de strings para imprimir en el footer del ticket/factura
+		percepciones (OPCIONAL): percepciones de la factura/ticket 
+		```
+			ds: (OBLIGATORIO) descripcion de la percepcion
+			importe: (OBLIGATORIO) importe de la percepcion
+			alic_iva: (OPCIONAL - DEFECTO '**.**') alicuota correspondiente de IVA (percepcion de IVA) o **.** para otras percepciones
+			porcPerc: (OPCIONAL - DEFECTO 0) porcentaje de la percepcion
+		```	
+		
+		descuentosRecargos (OPCIONAL): descuentos y recargos al final de los items
+		```
+			ds: (OBLIGATORIO) descripcion del descuento/recargo
+			importe: (OBLIGATORIO) importe del descuento/recargo
+			alic_iva: (OPCIONAL - DEFECTO 21) alicuota correspondiente de IVA
+			tasaAjusteInternos: (OPCIONAL - DEFECTO 0) la tasa de ajuste para calculo de impuestos internos (Ver manual de las fiscales correspondientes)
+			itemNegative: (OPCIONAL - DEFECTO True) si el item es en negativo (descuento) o en positivo (recargo)
+		```	
+		
+		pie (OPCIONAL): 
+		```array de strings para imprimir en el footer del ticket/factura```
 		
 ## EJEMPLOS
 

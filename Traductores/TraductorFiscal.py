@@ -193,12 +193,8 @@ class TraductorFiscal(TraductorInterface):
 			self.factura["items"].append(dict(ds=ds, qty=qty, 
 											  importe=importe, alic_iva=alic_iva, tasaAjusteInternos=tasaAjusteInternos,
 											  itemNegative=itemNegative, discount=discount, discountDescription=discountDescription, discountNegative=discountNegative))
-			##ds = unicode(ds, "latin1") # convierto a latin1
-			# Nota: no se calcula neto, iva, etc (deben venir calculados!)
 			if discountDescription == '':
 				discountDescription = ds
-			
-			print("DS: ", discountDescription)
 			
 			return self.comando.addItem(ds, float(qty), float(importe), float(alic_iva), float(tasaAjusteInternos)
 										itemNegative, float(discount), discountDescription, discountNegative)
@@ -209,7 +205,7 @@ class TraductorFiscal(TraductorInterface):
 			
 			return self.comando.addRemitItem(ds, float(qty))								
  
-	def _imprimirDtoRec(self, ds, importe, alic_iva=21., tasaAjusteInternos=0, itemNegative=False):
+	def _imprimirDtoRec(self, ds, importe, alic_iva=21., tasaAjusteInternos=0, itemNegative=True):
 	
 		self.factura["descuentosRecargos"].append(dict(ds=ds, importe=importe, alic_iva=alic_iva, tasaAjusteInternos=tasaAjusteInternos, 
 										  itemNegative=itemNegative))
