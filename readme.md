@@ -128,48 +128,48 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 
 ### Tipos de comprobantes
 ```
-   tipo_cbte
-        "TA", 	#Tiquets A
-		"TB",  	#Tiquets B
-        "FA", 	#Factura A
-        "FB", 	#Factura B
-        "NDA", 	#Nota Debito A
-        "NCA", 	#Nota Credito A
-        "NDB", 	#Nota Debito B
-        "NCB", 	#Nota Credito B
-        "FC", 	#Factura C
-        "NDC", 	#Nota Debito C
-        "NDC", 	#Nota Credito C
-        "R" 	#Remito
+  tipo_cbte
+      "TA", 	#Tiquets A
+      "TB",  	#Tiquets B
+      "FA", 	#Factura A
+      "FB", 	#Factura B
+      "NDA", 	#Nota Debito A
+      "NCA", 	#Nota Credito A
+      "NDB", 	#Nota Debito B
+      "NCB", 	#Nota Credito B
+      "FC", 	#Factura C
+      "NDC", 	#Nota Debito C
+      "NDC", 	#Nota Credito C
+      "R" 		#Remito
 ```		
 ### Tipos de documentos
 ```
-   tipo_doc
-		"DNI",
-		"CUIT",
-		"LIBRETA_CIVICA",
-		"LIBRETA_ENROLAMIENTO",
-		"PASAPORTE",
-		"SIN_CALIFICADOR",
-		"CEDULA"
+  tipo_doc
+     "DNI",
+     "CUIT",
+     "LIBRETA_CIVICA",
+     "LIBRETA_ENROLAMIENTO",
+     "PASAPORTE",
+     "SIN_CALIFICADOR",
+     "CEDULA"
 ```
 ### Tipos de responsable
 ```
-    tipo_responsable
-		"RESPONSABLE_INSCRIPTO",
-		"RESPONSABLE_NO_INSCRIPTO",
-		"NO_RESPONSABLE",
-		"EXENTO",
-		"CONSUMIDOR_FINAL",
-		"RESPONSABLE_MONOTRIBUTO",
-		"NO_CATEGORIZADO",
-		"PEQUENIO_CONTRIBUYENTE_EVENTUAL",
-		"MONOTRIBUTISTA_SOCIAL",
-		"PEQUENIO_CONTRIBUYENTE_EVENTUAL_SOCIAL"
+  tipo_responsable
+     "RESPONSABLE_INSCRIPTO",
+     "RESPONSABLE_NO_INSCRIPTO",
+     "NO_RESPONSABLE",
+     "EXENTO",
+     "CONSUMIDOR_FINAL",
+     "RESPONSABLE_MONOTRIBUTO",
+     "NO_CATEGORIZADO",
+     "PEQUENIO_CONTRIBUYENTE_EVENTUAL",
+     "MONOTRIBUTISTA_SOCIAL",
+     "PEQUENIO_CONTRIBUYENTE_EVENTUAL_SOCIAL"
 ```
 ### Partes del JSON a enviar
     encabezado (OPCIONAL): 
-			array de strings para imprimir en el header del ticket/factura
+       array de strings para imprimir en el header del ticket/factura
 		
     cabecera (OBLIGATORIO): 
        tipo_cbte: (OPCIONAL - DEFECTO 'TB') tipo de comprobante segun la tabla antes especificada
