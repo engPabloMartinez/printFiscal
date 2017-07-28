@@ -116,9 +116,9 @@ El JSON siempre tiene que tener este formato
 ```	
  {
    "accion_a_ejecutar": 
-	 {
+    {
        parametros de la accion
-	 },
+    },
     "printerName": "IMPRESORA_FISCAL" // este es el nombre de la impresora del archivo config.ini (siempre tiene que haber una con este nombre minimamente)
  }
 ```	
