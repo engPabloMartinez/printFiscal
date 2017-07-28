@@ -196,7 +196,7 @@ class TraductorFiscal(TraductorInterface):
 			if discountDescription == '':
 				discountDescription = ds
 			
-			return self.comando.addItem(ds, float(qty), float(importe), float(alic_iva), float(tasaAjusteInternos)
+			return self.comando.addItem(ds, float(qty), float(importe), float(alic_iva), float(tasaAjusteInternos),
 										itemNegative, float(discount), discountDescription, discountNegative)
 		# remito
 		else: 

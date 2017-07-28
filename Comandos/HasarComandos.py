@@ -364,7 +364,9 @@ class HasarComandos(ComandoInterface):
         else:
 		    terminalItem = "T"
         
-		tasaAjuste = "+0." + str(tasaAjusteInternos)
+        tasaAjuste = "{0:.8f}".format(tasaAjusteInternos)
+        tasaAjuste = int(float(tasaAjuste)*100000000)
+        tasaAjuste = "+0." + str(tasaAjuste)
 		
         for d in description[:-1]:
             self._sendCommand(self.CMD_PRINT_TEXT_IN_FISCAL, [self._formatText(d, 'fiscalText'), "0"])
@@ -402,7 +404,9 @@ class HasarComandos(ComandoInterface):
         else:
 		    terminalItem = "T"
         
-		tasaAjuste = "+0." + str(tasaAjusteInternos)
+        tasaAjuste = "{0:.8f}".format(tasaAjusteInternos)
+        tasaAjuste = int(float(tasaAjuste)*100000000)
+        tasaAjuste = "+0." + str(tasaAjuste)
 		
         for d in description[:-1]:
             self._sendCommand(self.CMD_PRINT_TEXT_IN_FISCAL, [self._formatText(d, 'fiscalText'), "0"])

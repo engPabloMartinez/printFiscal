@@ -276,7 +276,8 @@ class EpsonComandos(ComandoInterface):
             self.CURRENT_DOC_CREDIT_TICKET) and ["", "", ""] or []
 			
         if tasaAjusteInternos > 0:
-			tasaAjuste = str(tasaAjusteInternos)
+            tasaAjuste = "{0:.8f}".format(tasaAjusteInternos)
+            tasaAjuste = str(int(float(tasaAjuste)*100000000))
         else:
 			tasaAjuste = "0" * 8
 			
