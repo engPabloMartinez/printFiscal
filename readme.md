@@ -32,9 +32,10 @@ Se incluyen los config.ini de cada uno de los modelos que se soportan, solo hay 
 
 Las opciones son:
 
-  para marca: [Hasar, Epson]
+  Marca: 
+```  [Hasar, Epson]```
 
-  modelos: 
+  Modelo: 
 ```		
 	(para Hasar)
 		"615"
@@ -48,13 +49,13 @@ Las opciones son:
 		"tm220af"
 ```	
 
-  path:
+  Path:
 ```	
 	en windows: (COM1, COM2, etc)
 	en linux: (/dev/ttyUSB0, /dev/ttyS0, etc)
 ```	
 
-  driver:
+  Driver:
 ```	Hasar, Epson, Dummy, File ```	
 
 
@@ -67,9 +68,7 @@ Las opciones son:
 			silentbatch.exe iniciarServicio.bat
 ```		
 	Linux: 
-```		
-		python server.py
-```		
+```		python server.py ```		
 	
 ### Instalar Daemond
 	Windows:
