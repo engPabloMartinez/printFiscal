@@ -96,7 +96,7 @@ Las opciones son:
 
 # Documentación
 
-**Por defecto el servidor inicia en localhost:12000/ws sino se le pasa host, puerto y uri.**
+## NOTA IMPORTANTE: Por defecto el servidor inicia en localhost:12000/ws sino se le pasa host, puerto y uri.
 
 Al imprimir un ticket el servidor enviará 3 comandos previos que pueden resultar en un mensaje de warning: **comando no es valido para el estado de la impresora fiscal**.
 
@@ -229,18 +229,18 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 			"tipo_responsable": "RESPONSABLE_INSCRIPTO"
 		},
 		"items": [{
-			"alic_iva": 21,
-			"importe": 128.5749995,
-			"ds": "FERNET",
-			"qty": 24,
-			"tasaAjusteInternos": 21.85
-			}, 
-			{
+				"alic_iva": 21,
+				"importe": 128.5749995,
+				"ds": "FERNET",
+				"qty": 24,
+				"tasaAjusteInternos": 21.85
+				}, 
+				{
 				"alic_iva": 21,
 				"importe": 164.0160845,
 				"ds": "VINO",
 				"qty": 6
-			}],
+				}],
 		"dtosGenerales": [{
 			"alic_iva": 21,
 			"importe": 10,
@@ -264,7 +264,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		"pie": ["Efectivo 4771.22", "Vuelto: 1.00"]
 	},
 	"printerName": "IMPRESORA_FISCAL"
-}
+	}
 
 ## ACCION openDrawer	
 
@@ -295,26 +295,26 @@ Imprime un cierre fiscal X o Z dependiendo el parámetro enviado
 
 ## ACCION getLastNumber	
 
-	Devuelve el numero del ultimo comprobante impreso segun tipo de factura como parámetro hay que pasarle una variable estatica "tipo_cbte"
+Devuelve el numero del ultimo comprobante impreso segun tipo de factura como parámetro hay que pasarle una variable estatica "tipo_cbte"
 
 ### Ultimo numero de Ticket A
 ```
 {
-	"getLastNumber": "TA"
+ "getLastNumber": "TA"
 }
 ```
 
 ### Ultimo numero de Factura A
 ```
 {
-	"getLastNumber": "FA"
+ "getLastNumber": "FA"
 }
 ```
 
 ### Ultimo numero de Nota de Credito A
 ```
 {
-	"getLastNumber": "NCA"
+ "getLastNumber": "NCA"
 }
 ```
 
@@ -324,10 +324,12 @@ La respuesta es un JSON con el siguiente formato
 ### En el caso del printTicket la rta es el numero impreso
 ```
 {
-	"rta": [{
-		"action": "printTicket",
-		"rta": "7"
-	}]
+ "rta": [
+   {
+	 "action": "printTicket",
+	 "rta": "7"
+   }
+ ]
 }
 ```
 
@@ -366,30 +368,30 @@ La respuesta es un JSON con el siguiente formato
 	
 	EPSON:
 	{
-		_status_fiscal_: "0600" (Hexadecimal)  
-		_status_impresora_: "C080" (Hexadecimal)  
-		_zeta_numero_: "1" (Integer)  
-		_cant_doc_fiscales_cancelados_: "0" (Integer)  
-		_cant_doc_nofiscales_homologados_: "0" (Integer) 
-		_cant_doc_nofiscales_: "1" (Integer)
-		_cant_doc_fiscales_bc_emitidos_: "0" (Integer)  
-		_cant_doc_fiscales_a_emitidos_: "0" (Integer)  
-		_ultimo_doc_bc_: "66733" (Integer)  
-		_monto_ventas_doc_fiscal_: "0.00"(Float) 
-		_monto_iva_doc_fiscal_: "0.00" (Float)  
-		_monto_percepciones_: "0.00" (Float) 
-		_ultimo_doc_a_: "2262" (Integer)
+	  _status_fiscal_: "0600" (Hexadecimal)  
+	  _status_impresora_: "C080" (Hexadecimal)  
+	  _zeta_numero_: "1" (Integer)  
+	  _cant_doc_fiscales_cancelados_: "0" (Integer)  
+	  _cant_doc_nofiscales_homologados_: "0" (Integer) 
+	  _cant_doc_nofiscales_: "1" (Integer)
+	  _cant_doc_fiscales_bc_emitidos_: "0" (Integer)  
+	  _cant_doc_fiscales_a_emitidos_: "0" (Integer)  
+	  _ultimo_doc_bc_: "66733" (Integer)  
+	  _monto_ventas_doc_fiscal_: "0.00"(Float) 
+	  _monto_iva_doc_fiscal_: "0.00" (Float)  
+	  _monto_percepciones_: "0.00" (Float) 
+	  _ultimo_doc_a_: "2262" (Integer)
      }
 
 ### Tambien puede venir un error en la impresion o configuracion
 ```
 {
-	"err": "Por el momento, la impresion de remitos no esta habilitada."
+ "err": "Por el momento, la impresion de remitos no esta habilitada."
 }
 ```
 ### O puede venir un mensaje de la impresora
 ```
 {
-	"msg": ["Poco papel para comprobantes o tickets"]
+ "msg": ["Poco papel para comprobantes o tickets"]
 }
 ```
