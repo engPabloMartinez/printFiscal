@@ -7,10 +7,15 @@ Agregue funcionalidad que no tenia el proyecto antes mencionado (por ejemplo, pe
 Funciona en cualquier PC con cualquier sistema operativo que soporte python.
 
 Windows: 
+```
+	
 	Se incluye en el proyecto la version del Python sobre la que esta testeada, y ya tiene incluidos todos las dependencias necesarias.
 	Ademas se adjunta el instalador del NMap que se necesita instalar. En la carpeta Instalar.
+```
 	
 Linux:
+```
+	
 	Se necesitan estas dependencias de python	
 		* python-pip (yum o apt-get)
 		* pyserial (pip install)
@@ -19,6 +24,8 @@ Linux:
 		* python-nmap (yum o apt-get)
 		* python-imaging python-serial python-dev python-setuptools (yum o apt-get)
 		* python-escpos (pip install)
+		
+```		
 
 Esta testeado y usandose en un Proyecto en Angular 2, solo hay que llamar a un WS de tipo WebSocket con la url, enviando y recibiendo JSONs.
 
