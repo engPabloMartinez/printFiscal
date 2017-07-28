@@ -8,13 +8,13 @@ Funciona en cualquier PC con cualquier sistema operativo que soporte python.
 
 Windows: 
 ```
-	Se incluye en el proyecto la version del Python sobre la que esta testeada, y ya tiene incluidos todos las dependencias necesarias.
-	Ademas se adjunta el instalador del NMap que se necesita instalar. En la carpeta Instalar.
+ Se incluye en el proyecto la version del Python sobre la que esta testeada, y ya tiene incluidos todos las dependencias necesarias.
+ Ademas se adjunta el instalador del NMap que se necesita instalar. En la carpeta Instalar.
 ```
 	
 Linux:
 ```	
-	Se necesitan estas dependencias de python	
+ Se necesitan estas dependencias de python	
 		* python-pip (yum o apt-get)
 		* pyserial (pip install)
 		* build-essential python-dev (yum o apt-get)
@@ -40,22 +40,22 @@ Las opciones son:
 
   Modelo: 
 ```		
-	(para Hasar)
-		"615"
-		"715v1"
-		"715v2"
-		"320"
+  (para Hasar)
+	"615"
+	"715v1"
+	"715v2"
+	"320"
 
-	(para Epson)
-		"tickeadoras"
-		"epsonlx300+"
-		"tm220af"
+  (para Epson)
+	"tickeadoras"
+	"epsonlx300+"
+	"tm220af"
 ```	
 
   Path:
 ```	
-	en windows: (COM1, COM2, etc)
-	en linux: (/dev/ttyUSB0, /dev/ttyS0, etc)
+  Windows: COM1, COM2, etc
+  Linux: /dev/ttyUSB0, /dev/ttyS0, etc
 ```	
 
   Driver:
@@ -64,34 +64,38 @@ Las opciones son:
 
 ### Iniciar el servicio
 
-	Windows:
-```			
-	Se incluye un bat llamado iniciarServicio.bat que ejecuta el daemon.
-	Si se quiere ejecutarlo en modo silent (que no abra la ventana negra del cmd), en el ejecutar de windows poner silentbatch.exe iniciarServicio.bat
+```	
+ Windows:
+   Se incluye un bat llamado iniciarServicio.bat que ejecuta el daemon.
+   Si se quiere ejecutarlo en modo silent (que no abra la ventana negra del cmd), en el ejecutar de windows poner silentbatch.exe iniciarServicio.bat
 ```		
-```	Linux: python server.py ```		
+```	
+Linux: 
+   python server.py 
+```		
 	
 ### Instalar Demonio
-	Windows:
-```			
-	Añadir un acceso directo a "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" con el comando	silentbatch.exe iniciarServicio.bat
+
+```
+Windows:
+  Añadir un acceso directo a "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" con el comando	silentbatch.exe iniciarServicio.bat
 ```	
 
-	Linux:
 ```	
-	Editar el archivo fiscal-server-rc 
-		Este hace que el server.py se convierta en un servicio de linux para ejecutar en background. 
-		Antes de instalarlo es necesario modificarle la linea donde se especifica el path en donde esta instalado el proyecto: 
-			DIR=aca poner el path a la carpeta, deberá ingresar el path correcto ( en el ultimo "/") EJ: DIR=/home/USER/fiscal
+ Linux:
+   Editar el archivo fiscal-server-rc 
+     Este hace que el server.py se convierta en un servicio de linux para ejecutar en background. 
+     Antes de instalarlo es necesario modificarle la linea donde se especifica el path en donde esta instalado el proyecto: 
+           DIR=aca poner el path a la carpeta, deberá ingresar el path correcto ( en el ultimo "/") EJ: DIR=/home/USER/fiscal
 			
-	cp fiscal-server-rc  /etc/init.d/  
-	update-rc.d fiscal-server-rc defaults	
+     cp fiscal-server-rc  /etc/init.d/  
+     update-rc.d fiscal-server-rc defaults	
 		
-	listo, ya lo podemos detener o iniciar usando
+     Ya lo podemos detener o iniciar usando:
 
-	service fiscal-server-rc stop
-	service fiscal-server-rc start
-	service fiscal-server-rc restart
+     service fiscal-server-rc stop
+     service fiscal-server-rc start
+     service fiscal-server-rc restart
 ```	
 
 # Documentación
@@ -101,9 +105,10 @@ Las opciones son:
 Al imprimir un ticket el servidor enviará 3 comandos previos que pueden resultar en un mensaje de warning: **comando no es valido para el estado de la impresora fiscal**.
 
 Esto no es un error, sino que antes de imprimir un tiquet envia:
+
 	* CANCELAR CUALQUIER TIQUET ABIERTO
 	* CANCELAR COMPROBANTE NO FISCAL
-	* CANCELAR NOTA ED CREDITO O DEBITO
+	* CANCELAR NOTA DE CREDITO O DEBITO
 
 De esta forma evitamos cualquier tipo de error si un comprobante esta abierto por ejemplo.
 
@@ -111,9 +116,9 @@ El JSON siempre tiene que tener este formato
 ```	
  {
    "accion_a_ejecutar": 
-	  {
-		 parametros de la accion
-	  },
+	 {
+       parametros de la accion
+	 },
     "printerName": "IMPRESORA_FISCAL" // este es el nombre de la impresora del archivo config.ini (siempre tiene que haber una con este nombre minimamente)
  }
 ```	
@@ -123,7 +128,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 
 ### Tipos de comprobantes
 ```
-	tipo_cbte
+   tipo_cbte
         "TA", 	#Tiquets A
 		"TB",  	#Tiquets B
         "FA", 	#Factura A
@@ -139,7 +144,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 ```		
 ### Tipos de documentos
 ```
-	tipo_doc
+   tipo_doc
 		"DNI",
 		"CUIT",
 		"LIBRETA_CIVICA",
@@ -150,7 +155,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 ```
 ### Tipos de responsable
 ```
-	tipo_responsable
+    tipo_responsable
 		"RESPONSABLE_INSCRIPTO",
 		"RESPONSABLE_NO_INSCRIPTO",
 		"NO_RESPONSABLE",
@@ -163,61 +168,61 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		"PEQUENIO_CONTRIBUYENTE_EVENTUAL_SOCIAL"
 ```
 ### Partes del JSON a enviar
-		encabezado (OPCIONAL): 
+    encabezado (OPCIONAL): 
 			array de strings para imprimir en el header del ticket/factura
 		
-		cabecera (OBLIGATORIO): 
-			tipo_cbte: (OPCIONAL - DEFECTO 'TB') tipo de comprobante segun la tabla antes especificada
-			tipo_responsable: (OPCIONAL - DEFECTO 'CONSUMIDOR_FINAL') tipo de responsable segun la tabla antes especificada
-			tipo_doc: (OPCIONAL - DEFECTO 'SIN_CALIFICADOR') tipo de documento segun la tabla antes especificada
-			nro_doc: (OPCIONAL - DEFECTO ' ') numero de documento del cliente
-			nombre_cliente: (OPCIONAL - DEFECTO ' ') nombre/razon social del cliente 
-			domicilio_cliente: (OPCIONAL - DEFECTO ' ') domicilio del cliente 
-			referencia: (OPCIONAL - DEFECTO None) numero de comprobante original (Solo para ND/NC)
-			copias: (OPCIONAL - DEFECTO 1) cantidad de copias (Solo para Remitos)
+    cabecera (OBLIGATORIO): 
+       tipo_cbte: (OPCIONAL - DEFECTO 'TB') tipo de comprobante segun la tabla antes especificada
+       tipo_responsable: (OPCIONAL - DEFECTO 'CONSUMIDOR_FINAL') tipo de responsable segun la tabla antes especificada
+       tipo_doc: (OPCIONAL - DEFECTO 'SIN_CALIFICADOR') tipo de documento segun la tabla antes especificada
+       nro_doc: (OPCIONAL - DEFECTO ' ') numero de documento del cliente
+       nombre_cliente: (OPCIONAL - DEFECTO ' ') nombre/razon social del cliente 
+       domicilio_cliente: (OPCIONAL - DEFECTO ' ') domicilio del cliente 
+       referencia: (OPCIONAL - DEFECTO None) numero de comprobante original (Solo para ND/NC)
+       copias: (OPCIONAL - DEFECTO 1) cantidad de copias (Solo para Remitos)
 		
-		items (OBLIGATORIO): array con el listado de productos a imprimir
-			ds: (OBLIGATORIO) descripcion del producto
-			qty: (OBLIGATORIO) cantidad del producto
-			importe: (OPCIONAL - DEFECTO 0) importe del producto
-			alic_iva: (OPCIONAL - DEFECTO 21) alicuota correspondiente de IVA
-			tasaAjusteInternos: (OPCIONAL - DEFECTO 0) la tasa de ajuste para calculo de impuestos internos (Ver manual de las fiscales correspondientes)
-			itemNegative: (OPCIONAL - DEFECTO False) si el item es en negativo (resta) o en positivo (suma)
-			discount: (OPCIONAL - DEFECTO 0) importe del descuento del item **(NO PROBADO)**
-			discountDescription: (OPCIONAL - DEFECTO ' ') descripcion del descuento del item **(NO PROBADO)**
-			discountNegative: (OPCIONAL - DEFECTO True) si el descuento es negativo (descuento) o positivo (recargo) **(NO PROBADO)**
+    items (OBLIGATORIO): array con el listado de productos a imprimir
+       ds: (OBLIGATORIO) descripcion del producto
+       qty: (OBLIGATORIO) cantidad del producto
+       importe: (OPCIONAL - DEFECTO 0) importe del producto
+       alic_iva: (OPCIONAL - DEFECTO 21) alicuota correspondiente de IVA
+       tasaAjusteInternos: (OPCIONAL - DEFECTO 0) la tasa de ajuste para calculo de impuestos internos (Ver manual de las fiscales correspondientes)
+       itemNegative: (OPCIONAL - DEFECTO False) si el item es en negativo (resta) o en positivo (suma)
+       discount: (OPCIONAL - DEFECTO 0) importe del descuento del item **(NO PROBADO)**
+       discountDescription: (OPCIONAL - DEFECTO ' ') descripcion del descuento del item **(NO PROBADO)**
+       discountNegative: (OPCIONAL - DEFECTO True) si el descuento es negativo (descuento) o positivo (recargo) **(NO PROBADO)**
 		
-		dtosGenerales (OPCIONAL): descuentos globales o recargos dependiendo el modelo de impresora
-			ds: (OBLIGATORIO) descripcion del descuento
-			importe: (OBLIGATORIO) importe del descuento
-			alic_iva: (OPCIONAL - DEFECTO 21) alicuota correspondiente de IVA
-			negative: (OPCIONAL - DEFECTO True) si el item es en negativo (descuento) o en positivo (recargo)
+    dtosGenerales (OPCIONAL): descuentos globales o recargos dependiendo el modelo de impresora
+       ds: (OBLIGATORIO) descripcion del descuento
+       importe: (OBLIGATORIO) importe del descuento
+       alic_iva: (OPCIONAL - DEFECTO 21) alicuota correspondiente de IVA
+       negative: (OPCIONAL - DEFECTO True) si el item es en negativo (descuento) o en positivo (recargo)
 		
-		formasPago (OPCIONAL): array con las distintas formas de pago del ticket / factura
-			ds: (OBLIGATORIO) descripcion de la forma de pago
-			importe: (OBLIGATORIO) importe de la forma de pago
+    formasPago (OPCIONAL): array con las distintas formas de pago del ticket / factura
+       ds: (OBLIGATORIO) descripcion de la forma de pago
+       importe: (OBLIGATORIO) importe de la forma de pago
 		
-		percepciones (OPCIONAL): percepciones de la factura/ticket 
-			ds: (OBLIGATORIO) descripcion de la percepcion
-			importe: (OBLIGATORIO) importe de la percepcion
-			alic_iva: (OPCIONAL - DEFECTO '**.**') alicuota correspondiente de IVA (percepcion de IVA) o **.** para otras percepciones
-			porcPerc: (OPCIONAL - DEFECTO 0) porcentaje de la percepcion
+    percepciones (OPCIONAL): percepciones de la factura/ticket 
+       ds: (OBLIGATORIO) descripcion de la percepcion
+       importe: (OBLIGATORIO) importe de la percepcion
+       alic_iva: (OPCIONAL - DEFECTO '**.**') alicuota correspondiente de IVA (percepcion de IVA) o **.** para otras percepciones
+       porcPerc: (OPCIONAL - DEFECTO 0) porcentaje de la percepcion
 				
-		descuentosRecargos (OPCIONAL): descuentos y recargos al final de los items
-			ds: (OBLIGATORIO) descripcion del descuento/recargo
-			importe: (OBLIGATORIO) importe del descuento/recargo
-			alic_iva: (OPCIONAL - DEFECTO 21) alicuota correspondiente de IVA
-			tasaAjusteInternos: (OPCIONAL - DEFECTO 0) la tasa de ajuste para calculo de impuestos internos (Ver manual de las fiscales correspondientes)
-			itemNegative: (OPCIONAL - DEFECTO True) si el item es en negativo (descuento) o en positivo (recargo)
+    descuentosRecargos (OPCIONAL): descuentos y recargos al final de los items
+       ds: (OBLIGATORIO) descripcion del descuento/recargo
+       importe: (OBLIGATORIO) importe del descuento/recargo
+       alic_iva: (OPCIONAL - DEFECTO 21) alicuota correspondiente de IVA
+       tasaAjusteInternos: (OPCIONAL - DEFECTO 0) la tasa de ajuste para calculo de impuestos internos (Ver manual de las fiscales correspondientes)
+       itemNegative: (OPCIONAL - DEFECTO True) si el item es en negativo (descuento) o en positivo (recargo)
 				
-		pie (OPCIONAL): 
-			array de strings para imprimir en el footer del ticket/factura
+    pie (OPCIONAL): 
+       array de strings para imprimir en el footer del ticket/factura
 		
 ## EJEMPLOS
 
 ### FACTURA A
 
-  {
+	{
 	"printTicket": {
 		"encabezado": ["Nombre del vendedor:", "PEPE GOMEZ", "."],
 		"cabecera": {
@@ -274,7 +279,7 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
 		"pie": ["Efectivo 4771.22", "Vuelto: 1.00"]
     },
 	"printerName": "IMPRESORA_FISCAL"
-  }
+	}
   
 ### NOTA DE CREDITO A
 
