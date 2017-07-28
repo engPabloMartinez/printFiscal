@@ -188,9 +188,13 @@ Lo enviamos usando websockets a un host y puerto determinado (el servidor fiscal
        alic_iva: (OPCIONAL - DEFECTO 21) alicuota correspondiente de IVA
        tasaAjusteInternos: (OPCIONAL - DEFECTO 0) la tasa de ajuste para calculo de impuestos internos (Ver manual de las fiscales correspondientes)
        itemNegative: (OPCIONAL - DEFECTO False) si el item es en negativo (resta) o en positivo (suma)
-       discount: (OPCIONAL - DEFECTO 0) importe del descuento del item **(NO PROBADO)**
-       discountDescription: (OPCIONAL - DEFECTO ' ') descripcion del descuento del item **(NO PROBADO)**
-       discountNegative: (OPCIONAL - DEFECTO True) si el descuento es negativo (descuento) o positivo (recargo) **(NO PROBADO)**
+       discount: (OPCIONAL - DEFECTO 0) importe del descuento del item (NO PROBADO)
+       discountDescription: (OPCIONAL - DEFECTO ' ') descripcion del descuento del item (NO PROBADO)
+       discountNegative: (OPCIONAL - DEFECTO True) si el descuento es negativo (descuento) o positivo (recargo) (NO PROBADO)
+	   
+	   **NOTA: 
+			en el caso de comprobantes A el importe debe ser NETO	
+		    en el caso de comprobantes B el importe debe ser con el IVA incluido **
 		
     dtosGenerales (OPCIONAL): descuentos globales o recargos dependiendo el modelo de impresora
        ds: (OBLIGATORIO) descripcion del descuento
