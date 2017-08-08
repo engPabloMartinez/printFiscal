@@ -1,0 +1,3 @@
+[console_scripts]
+python-escpos = escpos.cli:main
+
