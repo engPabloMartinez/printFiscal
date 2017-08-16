@@ -1,1 +1,1 @@
-Python27\python server.py
+.\Python27\python.exe server.py
