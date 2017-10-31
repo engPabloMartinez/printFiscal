@@ -1,6 +1,6 @@
 # printFiscal
 
-## NOTA IMPORTANTE pepepepeep: Este proyecto está basado en el proyecto https://github.com/paxapos/fiscalberry.
+## NOTA IMPORTANTE: Este proyecto está basado en el proyecto https://github.com/paxapos/fiscalberry.
 
 Agregue funcionalidad que no tenia el proyecto antes mencionado (por ejemplo, percepciones, impuestos internos, remitos, descuentos y recargos, etc.)
 
